@@ -43,7 +43,7 @@ local screen = nil
 function mydofile (filename)
     -- local f = assert(loadfile(filename))
     --  mode: b: only binary, t: only text, c: compile only, x: do not compile
-    local mode = 'bx'
+    local mode = 'bt'
     if on_simulator then
         mode = 'T'
     end
@@ -111,7 +111,7 @@ local function run(event)
         if lat == 0.0 and lon == 0.0 then
             screen.text(2, "    GPS Position: waiting for signal...")
         else
-            screen.text(2, string.format("    GPS Position: %9.6f, %9.6f",lat,lon))
+            screen.text(2, string.format(" Lat: %9.7f Lon: %9.7f",lat,lon))
         end
         screen.text(3, string.format("    Course Direction: %5.1f",cdir))
         screen.text(4, string.format("    Competition Type: %s", comp_type))
@@ -168,6 +168,7 @@ local function run(event)
             global_comp_type = comp_type
             global_has_changed = true
             screen.text(5, "    --- Activated ---",INVERS)
+            playTone(600,300,0,PLAY_NOW)
             activated = 50
         end
     end
@@ -224,7 +225,7 @@ local function run(event)
             if newLat ~= lat or newLon ~= lon then
                 lat = newLat
                 lon = newLon
-                screen.text(2, string.format("    GPS Position: %9.6f, %9.6f",lat,lon))
+                screen.text(2, string.format(" Lat: %9.7f Lon: %9.7f",lat,lon))
             end
         else
             screen.text(2, "    GPS Position: waiting for signal...")

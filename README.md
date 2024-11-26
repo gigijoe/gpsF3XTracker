@@ -1,3 +1,10 @@
+# Support RCGPS-F3x
+Tested with RadioMaster TX12 Transmitter / ER6 ELRS Receiver
+- Support new sensor RCGPS-F3x
+- Modify for 128x64 LCD
+- Start button on SA
+- More tones
+
 # Status Version V0.2
 Currently only supported for Taranis X9d+ and opentx-2.3!
 It looks as if edgeTX is also working but I did not yet change to edgeTX. (But I will do it soon)

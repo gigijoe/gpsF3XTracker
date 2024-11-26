@@ -80,11 +80,14 @@ function comp.start()
     
     if comp.state == 1 then
         comp.message = "started..."
+        --[[
         if comp.training then
             comp.state = 15
         else
             comp.state = 5
         end
+        ]]--
+        comp.state = 5
     else
         comp.message = "cancelled..."
         comp.state = 0
@@ -95,6 +98,7 @@ local lapTimeOdd = 0
 function comp.lapPassed(lap, laptime)
     comp.message = string.format("lap %d: %5.2fs", lap, laptime/1000.)
     playNumber(lap,0)
+    --[[
     if comp.training then
         -- My friend Markus Meissner wants to have time only on even laps
         if lap % 2 == 0 then
@@ -105,6 +109,7 @@ function comp.lapPassed(lap, laptime)
             lapTimeOdd = laptime
         end
     end
+    ]]--
 end
 -------------------------------------------------------
 -- Update Competition Status Machine
@@ -143,7 +148,7 @@ function comp.update(height)
     if comp.state == 10 then
         if comp.baseAleft then
             if comp.leftBaseOut > 0 then
-                playTone(800,300,0,PLAY_NOW)
+                playTone(900,300,0,PLAY_NOW)
                 comp.cleanbases()
                 comp.message = "out of course"
                 comp.state = 15
@@ -151,7 +156,7 @@ function comp.update(height)
             end
         else
             if comp.rightBaseOut > 0 then
-                playTone(800,300,0,PLAY_NOW)
+                playTone(900,300,0,PLAY_NOW)
                 comp.cleanbases()
                 comp.message = "out of course"
                 comp.state = 15
@@ -236,7 +241,11 @@ function comp.update(height)
         -- RIGHT BASE
         if comp.rightBaseOut  > 0 then
             local laptime = comp.rightBaseOut - comp.lastLap
-            playTone(800,300,0,PLAY_NOW)
+            if comp.lap == 9 then
+            	playTone(800,300,0,PLAY_NOW)
+            else
+            	playTone(1000,600,0,PLAY_NOW)
+            end
             comp.lastLap = comp.rightBaseOut
             comp.cleanbases()
             if comp.lap > 9 then
@@ -258,7 +267,11 @@ function comp.update(height)
         comp.runtime = getTime() * 10 - comp.startTime_ms
         if comp.leftBaseOut > 0 then
             local laptime = comp.leftBaseOut - comp.lastLap
-            playTone(800,300,0,PLAY_NOW)
+            if comp.lap == 9 then
+            	playTone(800,300,0,PLAY_NOW)
+            else
+            	playTone(1000,600,0,PLAY_NOW)
+            end
             comp.lastLap = comp.leftBaseOut
             comp.cleanbases()
             if comp.lap > 9 then

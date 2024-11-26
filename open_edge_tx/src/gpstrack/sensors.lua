@@ -44,11 +44,20 @@ data.gpsV2 = {
     gpsDate = {name = "Date", id = 0},
     addEle = {name = "ele", id = 0}
 }
+-- RCGPS-F3x with edgeTX / CRSF
+data.gpsF3x = {
+    gpsAlt   = {name = "Alt", id = 0, factor = 1.0},
+    gpsCoord = {name = "GPS", id = 0},
+    gpsSpeed = {name = "GSpd", id = 0, factor = 1.0},
+    -- gpsDate = {name = "Date", id = 0},
+    addEle = {name = "ele", id = 0}
+}
 -- debugging
 data.testUnit = {
     rssi   = {name = "RSSI", id = 0},
     rxbat = {name = "RxBt", id = 0}
 }
+
 -- debug value getter
 function sensor.rssi()
     return getValue(sensor.data.rssi.id)
@@ -86,17 +95,17 @@ function sensor.az()
 end
 -- simulate az with elevator for FrSky V2
 
-local old_speed
+-- local old_speed = 0
 function sensor.az_sim()
     -- poor mans acceleratometer
-    local speed = sensor.data.old_speed
+    -- local speed = sensor.data.old_speed
     local elev = getValue(sensor.data.addEle.id)
-    local az = 0
-    if math.abs(elev) < 103 then
+    -- local az = 0
+    -- if math.abs(elev) < 103 then
         -- take groundspeed only if the elevator is used less than 10%
         speed = sensor.gpsSpeed() 
-        old_speed = speed 
-    end
+        -- old_speed = speed 
+    -- end
     -- I still follow up the idea that we fly on a radius r ~= |v| -> az ~= v
     -- Then az shall be proportional to elevator-deflection * groundspeed
     az = elev * speed / 5120.0
@@ -105,6 +114,10 @@ function sensor.az_sim()
     --    az = 16.0
     --end
     return az
+end
+
+function sensor.az_zero()
+    return 0;
 end
 
 -- read the field infos for all sensors of the telemetry unit 
@@ -148,6 +161,10 @@ function sensor.init(name)
         sensor.name = name
         sensor.az = sensor.az_sim
         result = sensor.initializeSensor(data.gpsV2)
+    elseif name == 'gpsF3x' then
+        sensor.name = name
+        sensor.az = sensor.az_zero
+        result = sensor.initializeSensor(data.gpsF3x)
     else
         sensor.name = 'test'
         result = sensor.initializeSensor(data.testUnit)

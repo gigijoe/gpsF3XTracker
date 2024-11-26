@@ -8,7 +8,7 @@ functions: ---------------------------------------------------------------------
 ################################################################################]]
 
 -- VARIABLES
-local startSwitchId = getFieldInfo("sh").id  -- start race when this switch is > 1024
+local startSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
 
 -- GLOBAL VARIABLES (don't change)
 global_gps_pos = {lat=0.,lon=0.}
@@ -40,7 +40,7 @@ local gps = nil
 function mydofile (filename)
     -- local f = assert(loadfile(filename))
     --  mode: b: only binary, t: only text, c: compile only, x: do not compile
-    local mode = 'bx'
+    local mode = 'bt'
     if on_simulator then
         mode = 'T'
     end
@@ -343,8 +343,9 @@ local function init(zone)
     end
     -- load sensor 
     sensor = mydofile(basePath..'sensors.lua')
+    gpsOK = sensor.init('gpsF3x')
     -- gpsOK = sensor.init('gpsV2')
-    gpsOK = sensor.init('logger3')
+    -- gpsOK = sensor.init('logger3')
     -- load course (2 bases)   
     course = mydofile(basePath..'course.lua')
 
