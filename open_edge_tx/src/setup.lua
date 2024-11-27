@@ -72,14 +72,19 @@ end
 -------------------------------------------------------------------------
 -- background (periodically called when custom telemetry screen is not visible)
 -------------------------------------------------------------------------
+local visible = false;
+
 local function background( event )
     -- not used
+    if visible then
+    	visible = false
+    end
 end
 -------------------------------------------------------------------------
 -- run (periodically called when custom telemetry screen is visible)
 -------------------------------------------------------------------------
 
-local cleaned = false
+-- local cleaned = false
 local cblist = {}
 local cblen = 0
 local idx = 0
@@ -93,10 +98,14 @@ local comp_type = '???'
 local locations = {}
 
 local function run(event)
+    if not visible then
+        screen.cleaned = false
+        visible = true
+    end
     ------------------------------------------------------------------------------------------
     -- Renew complete screen
     ------------------------------------------------------------------------------------------
-        if not screen.cleaned then
+    if not screen.cleaned then
         -- create a full new screen
         screen.clean()
         screen.title("GPS Parameter Setup", 2, 2)
@@ -113,10 +122,10 @@ local function run(event)
         else
             screen.text(2, string.format(" Lat: %9.7f Lon: %9.7f",lat,lon))
         end
-        screen.text(3, string.format("    Course Direction: %5.1f",cdir))
-        screen.text(4, string.format("    Competition Type: %s", comp_type))
-        screen.text(5, "    Activate values by pressing Enter")
-        cleaned = true
+        screen.text(3, string.format(" Course Direction: %5.1f",cdir))
+        screen.text(4, string.format(" Competition Type: %s", comp_type))
+        screen.text(5, "    Activate by pressing Enter")
+        -- cleaned = true
     end
     
     if event == EVT_PLUS_FIRST or event == EVT_ROT_LEFT then
@@ -202,7 +211,7 @@ local function run(event)
         newDir = straight(sliderVal,0,360,180) + 0.0
         if cdir ~= newDir then
             cdir = newDir
-            screen.text(3, string.format("    Course Direction: %5.1f",cdir))
+            screen.text(3, string.format(" Course Direction: %5.1f",cdir))
         end
         
         -- competition type from slider 2
@@ -215,7 +224,7 @@ local function run(event)
         end
         if comp_type ~= compName(newChoice) then
             comp_type = compName(newChoice)
-            screen.text(4, string.format("    Competition Type: %s", comp_type))
+            screen.text(4, string.format(" Competition Type: %s", comp_type))
         end
         
         -- home position from actual GPS values

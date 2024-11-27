@@ -69,7 +69,12 @@ end
 -------------------------------------------------------------------------
 -- background (periodically called)
 -------------------------------------------------------------------------
+local visible = false;
+
 local function background( event )
+    if visible then
+        visible = false
+    end
     if debug then
         -- debug without GPS sensor
         local dist2home,dir2home = getPosition()
@@ -201,6 +206,10 @@ local last_timestamp = 0
 local last_loop = 0
 
 local function run(event)
+    if not visible then
+        screen.cleaned = false
+        visible = true
+    end
     -------------------------------------------------------
     -- setup screen   
     -------------------------------------------------------
@@ -367,7 +376,7 @@ local function init(zone)
         comp.init('training', global_baseA_left)
         -- setup course (debuggg)    
         course.init(10, math.rad(global_home_dir), comp)
-    end    
+    end
 end
 
 return { init=init, background=background, run=run }
