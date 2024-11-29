@@ -181,7 +181,9 @@ local function run(event)
             activated = 50
         end
     end
-
+    if activated > 0 then
+        screen.text(5, "    --- Activated ---",INVERS)
+    end
     if event == EVT_PAGE_BREAK or event == EVT_PAGE_LONG then
         ----------------------------------------------------
         -- leave page -> redraw screen on next activation

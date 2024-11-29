@@ -9,6 +9,7 @@
 local locations = {
     {name = 'Use "Live" Position and Direction', lat = 0.0, lon = 0.0, dir = 0.0, comp = 1},
     {name = "Houlong TW", lat = 24.6002242, lon = 120.8005573, dir = 115.0, comp = 1},
+    {name = "Longtan TW", lat = 24.8694265, lon = 121.1822915, dir = 120.0, comp = 1},
     {name = "Parkplatz", lat = 53.550707, lon = 9.923472, dir = 9.0, comp = 5},
     {name = "Loechle", lat = 47.701974, lon = 8.3558498, dir = 152.0, comp = 1},
     {name = "Soenderborg", lat = 53.333333, lon = 51.987654, dir = 19.9, comp = 3},

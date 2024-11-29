@@ -8,7 +8,9 @@ functions: ---------------------------------------------------------------------
 ################################################################################]]
 
 -- VARIABLES
-local startSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
+-- local startSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
+local startBaseALeftSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
+local startBaseARightSwitchId = getFieldInfo("sb").id  -- start race when this switch is > 1024
 
 -- GLOBAL VARIABLES (don't change)
 global_gps_pos = {lat=0.,lon=0.}
@@ -187,8 +189,34 @@ end
 -------------------------------------------------------------------------
 local pressed = false
 local function startPressed()
+    --[[
     local startVal = getValue(startSwitchId)
     if startVal > 512 and not pressed then
+        pressed = true
+        return true
+    end
+    if pressed and startVal < 128 then
+        pressed = false
+    end
+    ]]--
+    local startVal = getValue(startBaseALeftSwitchId)
+    if startVal > 512 and not pressed then
+        if global_baseA_left == false then
+            global_baseA_left = true
+            global_has_changed = true
+        end
+        pressed = true
+        return true
+    end
+    if pressed and startVal < 128 then
+        pressed = false
+    end
+    startVal = getValue(startBaseARightSwitchId)
+    if startVal > 512 and not pressed then
+        if global_baseA_left == true then
+            global_baseA_left = false
+            global_has_changed = true
+        end
         pressed = true
         return true
     end
@@ -239,7 +267,7 @@ local function run(event)
             if global_baseA_left then
                 base = "base A: left"
             end
-            text = string.format("Course Setup: %s", base)
+            text = string.format("Course : %s", base)
         end
         screen.text(2, text)
         screen.showStack()
@@ -290,7 +318,7 @@ local function run(event)
                 screen.text(3, "Course: " .. course.message)
                 -- line 4: course information
                 screen.text(4, string.format("V: %6.2f m/s Dst: %-7.2f m ",course.lastGroundSpeed, course.lastDistance))
-                screen.text(5, string.format("H: %5.2fm           %5.1f calls/s",comp.groundHeight, rate))
+                screen.text(5, string.format("H: %5.2fm %5.1f calls/s",comp.groundHeight, rate))
                 -- line 5: gps information
                 -- screen.text(5, string.format("GPS: %9.6f %9.6f",global_gps_pos.lat,global_gps_pos.lon))  
             end
