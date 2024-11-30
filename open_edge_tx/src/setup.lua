@@ -118,13 +118,13 @@ local function run(event)
             screen.text(1," " .. cblist[idx+1],0)
         end
         if lat == 0.0 and lon == 0.0 then
-            screen.text(2, "    GPS Position: waiting for signal...")
+            screen.text(2, " GPS: waiting for signal...")
         else
             screen.text(2, string.format(" Lat: %9.7f Lon: %9.7f",lat,lon))
         end
         screen.text(3, string.format(" Course Direction: %5.1f",cdir))
-        screen.text(4, string.format(" Competition Type: %s", comp_type))
-        screen.text(5, "    Activate by pressing Enter")
+        screen.text(4, string.format(" Competition: %s", comp_type))
+        screen.text(5, "  Activate by pressing Enter")
         -- cleaned = true
     end
     
@@ -226,7 +226,7 @@ local function run(event)
         end
         if comp_type ~= compName(newChoice) then
             comp_type = compName(newChoice)
-            screen.text(4, string.format(" Competition Type: %s", comp_type))
+            screen.text(4, string.format(" Competition: %s", comp_type))
         end
         
         -- home position from actual GPS values
@@ -236,10 +236,10 @@ local function run(event)
             if newLat ~= lat or newLon ~= lon then
                 lat = newLat
                 lon = newLon
-                screen.text(2, string.format(" Lat: %9.7f Lon: %9.7f",lat,lon))
+                screen.text(2, string.format(" Lat: %9.7f Lon: %9.7f", lat, lon))
             end
         else
-            screen.text(2, "    GPS Position: waiting for signal...")
+            screen.text(2, " GPS: waiting for signal...")
         end 
     end
     if activated > 0 then

@@ -1,5 +1,5 @@
 # Support RCGPS-F3x
-Tested with RadioMaster TX12 Transmitter / ER6 ELRS Receiver
+Tested with RadioMaster TX12 / Boxer Transmitter & ER6 ELRS Receiver
 - Support new sensor RCGPS-F3x
 - Modify for 128x64 LCD
 - Start button on SA

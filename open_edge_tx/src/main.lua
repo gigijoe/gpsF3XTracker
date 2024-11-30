@@ -263,11 +263,11 @@ local function run(event)
         if type(global_comp_types) ~= 'table' then
             text = "Course Setup: use setup screen"
         else
-            local base = "base A: right"
+            local base = "Base A: right >>>"
             if global_baseA_left then
-                base = "base A: left"
+                base = "Base A: <<< left"
             end
-            text = string.format("Course : %s", base)
+            text = string.format("%s", base)
         end
         screen.text(2, text)
         screen.showStack()
@@ -318,20 +318,20 @@ local function run(event)
                 screen.text(3, "Course: " .. course.message)
                 -- line 4: course information
                 screen.text(4, string.format("V: %6.2f m/s Dst: %-7.2f m ",course.lastGroundSpeed, course.lastDistance))
-                screen.text(5, string.format("H: %5.2fm %5.1f calls/s",comp.groundHeight, rate))
+                screen.text(5, string.format("H: %5.2fm DR: %2.1f Hz ",comp.groundHeight, rate))
                 -- line 5: gps information
                 -- screen.text(5, string.format("GPS: %9.6f %9.6f",global_gps_pos.lat,global_gps_pos.lon))  
             end
         else
             -- GPS sensor is warming up
-            screen.text(4, "GPS: waiting for data...")
+            screen.text(4, "GPS: no data")
         end
     else
         -- sensor not defined/connected
         if string.len(sensor.err) > 0 then
             screen.text(5, "GPS: " .. sensor.err, INVERS+BLINK)
         else
-            screen.text(5, "GPS sensor not found: " .. sensor.name, INVERS+BLINK)
+            screen.text(5, "GPS: no sensor " .. sensor.name, INVERS+BLINK)
         end
     end
     -- miscelanious
