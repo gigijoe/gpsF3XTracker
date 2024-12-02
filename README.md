@@ -5,6 +5,10 @@ Tested with RadioMaster TX12 / Boxer Transmitter & ER6 ELRS Receiver
 - Start button on SA
 - More tones
 
+![](https://github.com/gigijoe/gpsF3XTracker/blob/main/media/Screenshot%20from%202024-12-02%2014-20-44.png)
+
+![](https://github.com/gigijoe/gpsF3XTracker/blob/main/media/Screenshot%20from%202024-12-02%2014-21-01.png)
+
 # Status Version V0.2
 Currently only supported for Taranis X9d+ and opentx-2.3!
 It looks as if edgeTX is also working but I did not yet change to edgeTX. (But I will do it soon)
