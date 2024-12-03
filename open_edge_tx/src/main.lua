@@ -216,10 +216,6 @@ local function startPressed()
           pressed = false
       end
     else
-        if boxer then
-            startSwitchId = getFieldInfo("sf").id  -- start race when this switch is > 1024
-        end
-    
         local startVal = getValue(startSwitchId)
         if startVal > 512 and not pressed then
             pressed = true
@@ -377,6 +373,9 @@ local function init(zone)
         taranis = true
     elseif string.find(radio,"tx12mk2") then
         tx12mk2 = true;
+    elseif string.find(radio,"boxer") then
+        boxer = true
+        startSwitchId = getFieldInfo("sf").id  -- start race when this switch is > 1024
     end
     -- load gps library
     gps = mydofile(basePath..'gpslib.lua')
