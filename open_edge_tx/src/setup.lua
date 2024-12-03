@@ -72,13 +72,11 @@ end
 -------------------------------------------------------------------------
 -- background (periodically called when custom telemetry screen is not visible)
 -------------------------------------------------------------------------
-local visible = false;
+local deactiveCount = 0
 
 local function background( event )
     -- not used
-    if visible then
-    	visible = false
-    end
+    deactiveCount = deactiveCount + 1
 end
 -------------------------------------------------------------------------
 -- run (periodically called when custom telemetry screen is visible)
@@ -98,13 +96,14 @@ local comp_type = '???'
 local locations = {}
 
 local function run(event)
-    if not visible then
-        screen.cleaned = false
-        visible = true
-    end
     ------------------------------------------------------------------------------------------
     -- Renew complete screen
     ------------------------------------------------------------------------------------------
+    if deactiveCount > 1 then
+        screen.cleaned = false
+    end
+    deactiveCount = 0
+    
     if not screen.cleaned then
         -- create a full new screen
         screen.clean()

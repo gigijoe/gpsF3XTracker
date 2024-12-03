@@ -8,9 +8,9 @@ functions: ---------------------------------------------------------------------
 ################################################################################]]
 
 -- VARIABLES
--- local startSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
+local startSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
 local startBaseALeftSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
-local startBaseARightSwitchId = getFieldInfo("sb").id  -- start race when this switch is > 1024
+local startBaseARightSwitchId = getFieldInfo("sd").id  -- start race when this switch is > 1024
 
 -- GLOBAL VARIABLES (don't change)
 global_gps_pos = {lat=0.,lon=0.}
@@ -27,6 +27,8 @@ local on_simulator = false
 local basePath = '/SCRIPTS/TELEMETRY/gpstrack/' 
 local gpsOK = false
 local taranis = false
+local tx12mk2 = false
+local boxer = false
 local debug = false
 
 -- WIDGETS
@@ -71,12 +73,11 @@ end
 -------------------------------------------------------------------------
 -- background (periodically called)
 -------------------------------------------------------------------------
-local visible = false;
+local deactiveCount = 0
 
 local function background( event )
-    if visible then
-        visible = false
-    end
+    deactiveCount = deactiveCount + 1
+    
     if debug then
         -- debug without GPS sensor
         local dist2home,dir2home = getPosition()
@@ -189,39 +190,44 @@ end
 -------------------------------------------------------------------------
 local pressed = false
 local function startPressed()
-    --[[
-    local startVal = getValue(startSwitchId)
-    if startVal > 512 and not pressed then
-        pressed = true
-        return true
-    end
-    if pressed and startVal < 128 then
-        pressed = false
-    end
-    ]]--
-    local startVal = getValue(startBaseALeftSwitchId)
-    if startVal > 512 and not pressed then
-        if global_baseA_left == false then
-            global_baseA_left = true
-            global_has_changed = true
+    if tx12mk2 then
+      local startVal = getValue(startBaseALeftSwitchId)
+      if startVal > 512 and not pressed then
+          if global_baseA_left == false then
+              global_baseA_left = true
+              global_has_changed = true
+          end
+          pressed = true
+          return true
+      end
+      if pressed and startVal < 128 then
+          pressed = false
+      end
+      startVal = getValue(startBaseARightSwitchId)
+      if startVal > 512 and not pressed then
+          if global_baseA_left == true then
+              global_baseA_left = false
+              global_has_changed = true
+          end
+          pressed = true
+          return true
+      end
+      if pressed and startVal < 128 then
+          pressed = false
+      end
+    else
+        if boxer then
+            startSwitchId = getFieldInfo("sf").id  -- start race when this switch is > 1024
         end
-        pressed = true
-        return true
-    end
-    if pressed and startVal < 128 then
-        pressed = false
-    end
-    startVal = getValue(startBaseARightSwitchId)
-    if startVal > 512 and not pressed then
-        if global_baseA_left == true then
-            global_baseA_left = false
-            global_has_changed = true
+    
+        local startVal = getValue(startSwitchId)
+        if startVal > 512 and not pressed then
+            pressed = true
+            return true
         end
-        pressed = true
-        return true
-    end
-    if pressed and startVal < 128 then
-        pressed = false
+        if pressed and startVal < 128 then
+            pressed = false
+        end    
     end
     return false
 end
@@ -234,10 +240,11 @@ local last_timestamp = 0
 local last_loop = 0
 
 local function run(event)
-    if not visible then
+    if deactiveCount > 1 then
         screen.cleaned = false
-        visible = true
     end
+    deactiveCount = 0
+    
     -------------------------------------------------------
     -- setup screen   
     -------------------------------------------------------
@@ -368,6 +375,8 @@ local function init(zone)
      -- I use some Taranis only functions
     if string.find(radio,"taranis") then
         taranis = true
+    elseif string.find(radio,"tx12mk2") then
+        tx12mk2 = true;
     end
     -- load gps library
     gps = mydofile(basePath..'gpslib.lua')
