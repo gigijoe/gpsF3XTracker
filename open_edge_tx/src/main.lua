@@ -29,6 +29,7 @@ local gpsOK = false
 local taranis = false
 local tx12mk2 = false
 local boxer = false
+local zorro = false
 local debug = false
 
 -- WIDGETS
@@ -190,7 +191,7 @@ end
 -------------------------------------------------------------------------
 local pressed = false
 local function startPressed()
-    if tx12mk2 then
+    if tx12mk2 or zorro then
         local startVal = getValue(startBaseALeftSwitchId)
         if startVal > 512 and not pressed then
             if global_baseA_left == false then
@@ -373,6 +374,8 @@ local function init(zone)
         taranis = true
     elseif string.find(radio,"tx12mk2") then
         tx12mk2 = true;
+    elseif string.find(radio,"zorro") then
+        zorro = true;
     elseif string.find(radio,"boxer") then
         boxer = true
         startSwitchId = getFieldInfo("sf").id  -- start race when this switch is > 1024
