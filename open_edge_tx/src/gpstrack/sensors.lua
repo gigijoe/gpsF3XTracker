@@ -45,7 +45,7 @@ data.gpsV2 = {
     addEle = {name = "ele", id = 0}
 }
 -- RCGPS-F3x with edgeTX / CRSF
-data.gpsF3x = {
+data.rcgpsF3x = {
     gpsAlt   = {name = "Alt", id = 0, factor = 1.0},
     gpsCoord = {name = "GPS", id = 0},
     gpsSpeed = {name = "GSpd", id = 0, factor = 1.0},
@@ -161,10 +161,10 @@ function sensor.init(name)
         sensor.name = name
         sensor.az = sensor.az_sim
         result = sensor.initializeSensor(data.gpsV2)
-    elseif name == 'gpsF3x' then
+    elseif name == 'rcgpsF3x' then
         sensor.name = name
         sensor.az = sensor.az_zero
-        result = sensor.initializeSensor(data.gpsF3x)
+        result = sensor.initializeSensor(data.rcgpsF3x)
     else
         sensor.name = 'test'
         result = sensor.initializeSensor(data.testUnit)

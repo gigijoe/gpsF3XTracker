@@ -191,30 +191,30 @@ end
 local pressed = false
 local function startPressed()
     if tx12mk2 then
-      local startVal = getValue(startBaseALeftSwitchId)
-      if startVal > 512 and not pressed then
-          if global_baseA_left == false then
-              global_baseA_left = true
-              global_has_changed = true
-          end
-          pressed = true
-          return true
-      end
-      if pressed and startVal < 128 then
-          pressed = false
-      end
-      startVal = getValue(startBaseARightSwitchId)
-      if startVal > 512 and not pressed then
-          if global_baseA_left == true then
-              global_baseA_left = false
-              global_has_changed = true
-          end
-          pressed = true
-          return true
-      end
-      if pressed and startVal < 128 then
-          pressed = false
-      end
+        local startVal = getValue(startBaseALeftSwitchId)
+        if startVal > 512 and not pressed then
+            if global_baseA_left == false then
+                global_baseA_left = true
+                global_has_changed = true
+            end
+            pressed = true
+            return true
+        end
+        if pressed and startVal < 128 then
+            pressed = false
+        end
+        startVal = getValue(startBaseARightSwitchId)
+        if startVal > 512 and not pressed then
+            if global_baseA_left == true then
+                global_baseA_left = false
+                global_has_changed = true
+            end
+            pressed = true
+            return true
+        end
+        if pressed and startVal < 128 then
+            pressed = false
+        end
     else
         local startVal = getValue(startSwitchId)
         if startVal > 512 and not pressed then
@@ -388,7 +388,7 @@ local function init(zone)
     end
     -- load sensor 
     sensor = mydofile(basePath..'sensors.lua')
-    gpsOK = sensor.init('gpsF3x')
+    gpsOK = sensor.init('rcgpsF3x')
     -- gpsOK = sensor.init('gpsV2')
     -- gpsOK = sensor.init('logger3')
     -- load course (2 bases)   
