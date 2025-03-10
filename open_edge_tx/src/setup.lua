@@ -124,7 +124,7 @@ local function run(event)
         screen.text(3, string.format(" Course Direction: %5.1f",cdir))
         screen.text(4, string.format(" Competition: %s", comp_type))
         screen.text(5, "  Activate by pressing Enter")
-        -- cleaned = true
+        cleaned = true
     end
     
     if event == EVT_PLUS_FIRST or event == EVT_ROT_LEFT then
@@ -238,7 +238,10 @@ local function run(event)
                 screen.text(2, string.format(" Lat: %9.7f Lon: %9.7f", lat, lon))
             end
         else
-            screen.text(2, " GPS: waiting for signal...")
+            -- screen.text(2, " GPS: waiting for signal...")
+            lat = 0.0
+            lon = 0.0
+            screen.cleaned = false
         end 
     end
     if activated > 0 then
