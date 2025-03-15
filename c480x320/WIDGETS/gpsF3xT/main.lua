@@ -55,10 +55,10 @@ end
 
 local options = {
   -- If options is changed by the user in the Widget Settings menu, then update will be called with a new options table
-  { "StartSw", SOURCE, 1 },
+  { "StartSw", SOURCE, 126 }, -- Default 126 is SH
 }
 
-startSwitchInfo = getFieldInfo("sh")  -- start race when this switch is > 1024
+startSwitchInfo = getFieldInfo("sh")
 
 local function update(widget, options)
   startSwitchInfo = getFieldInfo(options.StartSw)
