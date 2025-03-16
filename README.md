@@ -1,9 +1,52 @@
-# Support RCGPS-F3x
-Tested with RadioMaster TX12 / Boxer Transmitter & ER6 ELRS Receiver
+# Support new sensor RCGPS-F3x
+# Support RadioMaster TX16s
+!!! Untested !!!
 - Support new sensor RCGPS-F3x
-- Modify for 128x64 LCD
-- Start button on SA
+- Modify for 480x320 color LCD
+- New user interface
+- Start button on SH 
+
+## Installation
+Copy everything in c480x320/WIDGETS/ folder to `/SCRIPTS/WIDGETS` folder on your SD-Card.
+
+Press [ Tele ] key to create 2 views and select widget 'gpsF3xS' & 'gpsF3xT'
+
+Press [ RTN ] key to return to main page
+
+Press [ PAGE> ] [ PAGE< ] keys to switch between gpsF3xSetup & gpsF3xTracker views
+
+On gpsF3xSetup view Long press [ ENTER ] and select 'Full screen' to enter setup page
+
+On gpsF3xTracker view Long press [ ENTER ] to select 'Full screen' to enter main page
+
+![](https://github.com/gigijoe/gpsF3XTracker/blob/main/media/screenshot_tx16s_25-03-13_18-40-09.png)
+
+![](https://github.com/gigijoe/gpsF3XTracker/blob/main/media/screenshot_tx16s_25-03-13_18-40-13.png)
+
+![](https://github.com/gigijoe/gpsF3XTracker/blob/main/media/screenshot_tx16s_25-03-13_18-40-22.png)
+
+![](https://github.com/gigijoe/gpsF3XTracker/blob/main/media/screenshot_tx16s_25-03-16_00-29-24.png)
+
+![](https://github.com/gigijoe/gpsF3XTracker/blob/main/media/screenshot_tx16s_25-03-15_23-59-36.png)
+
+# Support RadioMaster TX12 MK2 / Boxer
+Tested with RadioMaster TX12 / Boxer Transmitter & ER6 ELRS / ER8G Receiver
+- Support new sensor RCGPS-F3x
+- Modify for 128x64 BW LCD
+- Start button on SA or SD (Start with Base A left or right)
 - More tones
+
+## Installation
+Copy everything in open_edge_tx/src/ folder to `/SCRIPTS/TELEMETRY` folder on your SD-Card.
+
+Setup scripts 
+[ MDL ] -> [ DISPLAY ] ->
+Screen 3 Script setup
+Screen 4 Script main
+
+Press [ RTN ] key to return to main page 
+
+Press [ TELE ] & [ PAGE > ] [ PAGE < ] key to enter telemetry pages and runing scripts
 
 ![](https://github.com/gigijoe/gpsF3XTracker/blob/main/media/Screenshot%20from%202024-12-02%2014-20-44.png)
 
