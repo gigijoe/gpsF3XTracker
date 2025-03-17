@@ -265,6 +265,24 @@ local lonLabel = gui.label(COL2, TOP + 5 * ROW, WIDTH, HEIGHT, "---")
 local courseLabel = gui.label(COL1, TOP + 6 * ROW, WIDTH, HEIGHT, "center ---")
 local speedDestLabel = gui.label(COL1, TOP + 7 * ROW, WIDTH, HEIGHT, "V: 0.00 m/s Dst:-0.00 m ")
 
+gui.label(COL3, TOP + 3 * ROW, WIDTH, HEIGHT, "Center Offset", VCENTER + BOLD)
+local centerOffsetLabel = gui.label(COL3, TOP + 5 * ROW, WIDTH, HEIGHT, "Center 0 m")
+local function centerOffsetSliderCallBack(slider)
+  comp.centerOffset = slider.value
+  local dirStr = ""
+  if slider.value < 0 then
+     dirStr = "Left"
+  elseif slider.value > 0 then
+     dirStr = "Right"
+  elseif slider.value == 0 then
+     dirStr = "Center"
+  end
+  centerOffsetLabel.title = string.format("%s %d m", dirStr, slider.value)
+end
+
+local centerOffsetSlider = gui.horizontalSlider(COL3, TOP + 4 * ROW + HEIGHT / 2, WIDTH, 0, -50, 50, 1, centerOffsetSliderCallBack)
+centerOffsetSliderCallBack(centerOffsetSlider)
+
 local startSwitchValue = getValue(startSwitchInfo.id)
 
 local lapItems = {"Lap 1 : ", "Lap 2 : ", "Lap 3 : ", "Lap 4 : ", "Lap 5 : ", "Lap 6 : ", "Lap 7 : ", "Lap 8 : ", "Lap 9 : ", "Lap 10 : "}
@@ -273,7 +291,7 @@ local lapsMenu = gui.menu(COL4, TOP, WIDTH, 9 * HEIGHT, lapItems, nil, GREEN)
 local function startSwitchPressed()
     local val = getValue(startSwitchInfo.id)
     if startSwitchValue ~= val then
-        print(string.format("SH : %d", val))
+        -- print(string.format("SH : %d", val))
         startSwitchValue = val
          
         if val > 512 then
@@ -356,7 +374,7 @@ end
 function libGUI.widgetRefresh()
   lcd.drawRectangle(0, 0, zone.w, zone.h, libGUI.colors.primary3)
   -- lcd.drawText(zone.w / 2, zone.h / 2, "gpsF3xTracker", DBLSIZE + CENTER + VCENTER + libGUI.colors.primary3)
-  
+
       -- if gpsOK or debug then  
     if type(global_gps_pos) == 'table' then   
         compLabel.title = global_comp_display
@@ -398,6 +416,16 @@ function libGUI.widgetRefresh()
 end
 
 function refresh()
+    local val = getValue(centerSliderInfo.id) / 20
+    if val > 50 then
+        val = 50
+    elseif val < -50 then
+        val = -50
+    end
+    centerOffsetSlider.value = val
+    centerOffsetSliderCallBack(centerOffsetSlider)
+    comp.centerOffset = val
+    
     if global_has_changed then
         print("Reload Competition ...")
         reloadCompetition()
