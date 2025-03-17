@@ -345,7 +345,7 @@ function gui.fullScreenRefresh()
         timerLabel.title = string.format("%02d:%02d", integer, decimal_part * 100)
 
         courseLabel.title = comp.message
-        speedDestLabel.title = string.format("V: %6.2f m/s Dst: %-7.2f m ", course.lastGroundSpeed,  course.lastDistance)
+        speedDestLabel.title = string.format("V: %6.2f m/s Dst: %-7.2f m ", course.lastGroundSpeed,  course.lastDistance + comp.centerOffset)
         latLabel.title = global_gps_pos.lat
         lonLabel.title = global_gps_pos.lon
         latLabel.flags = VCENTER + BLACK
