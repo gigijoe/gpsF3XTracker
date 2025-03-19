@@ -310,7 +310,8 @@ function gui.fullScreenRefresh()
     lcd.drawText(COL1, HEADER / 2, "gpsF3xTracker", VCENTER + DBLSIZE + libGUI.colors.primary2)
 
     -- if gpsOK or debug then  
-    if type(global_gps_pos) == 'table' then   
+    if type(global_gps_pos) == 'table' and 
+            (global_gps_pos.lat ~= 0.0 and global_gps_pos.lon ~= 0.0) then   
         compLabel.title = global_comp_display
 
         -- check for start event
@@ -376,7 +377,8 @@ function libGUI.widgetRefresh()
   -- lcd.drawText(zone.w / 2, zone.h / 2, "gpsF3xTracker", DBLSIZE + CENTER + VCENTER + libGUI.colors.primary3)
 
       -- if gpsOK or debug then  
-    if type(global_gps_pos) == 'table' then   
+    if type(global_gps_pos) == 'table' and 
+            (global_gps_pos.lat ~= 0.0 and global_gps_pos.lon ~= 0.0) then   
         compLabel.title = global_comp_display
 
         -- check for start event
@@ -404,15 +406,23 @@ function libGUI.widgetRefresh()
         end
     end
     
-    lcd.drawText(10, 10, global_comp_display)
+    lcd.drawText(4, 4, global_comp_display)
     if global_baseA_left then
-        lcd.drawText(130, 10, "BASE A Left")
+        lcd.drawText(124, 4, "BASE A Left")
     else
-        lcd.drawText(130, 10, "BASE A Right")
+        lcd.drawText(124, 4, "BASE A Right")
     end
     integer, decimal_part = math.modf(comp.runtime / 1000)    
-    lcd.drawText(10, 30, string.format("%02d:%02d", integer, decimal_part * 100), FONT_38 + YELLOW)
-    lcd.drawText(10, 100, comp.message)
+    lcd.drawText(10, 20, string.format("%02d:%02d", integer, decimal_part * 100), FONT_38 + YELLOW)
+    -- lcd.drawText(10, 100, comp.message)
+    if type(global_gps_pos) == 'table' and 
+            (global_gps_pos.lat ~= 0.0 and global_gps_pos.lon ~= 0.0) then   
+      lcd.drawText(10, 90, strGpsFixLock.." ... [ "..global_gps_sensor.gpsSats().." ]", BOLD + BLACK)
+    else
+      lcd.drawText(10, 90, strWaitingForGpsSignal, BOLD + RED)
+    end
+
+    lcd.drawText(10, 140, "Touch then press ENT full screen mode", BOLD + GREY)
 end
 
 function refresh()
@@ -448,8 +458,8 @@ function refresh()
             if global_home_pos.lat == 0.0 and global_home_pos.lon == 0.0 then
                 global_home_pos.lat = global_gps_pos.lat
                 global_home_pos.lon = global_gps_pos.lon
-print("Set current position as home ...")
-print(string.format("GPS: %9.6f %9.6f", global_gps_pos.lat, global_gps_pos.lon))
+-- print("Set current position as home ...")
+-- print(string.format("GPS: %9.6f %9.6f", global_gps_pos.lat, global_gps_pos.lon))
                 -- global_has_changed = true
             end
             local dist2home = gps.getDistance(global_home_pos, global_gps_pos)

@@ -291,15 +291,8 @@ function gui.fullScreenRefresh()
   -- GPS position updated in gpsF3xT widget.background(widget)
   -- global_gps_pos = global_gps_sensor.gpsCoord()
   
-  if type(global_gps_pos) ~= 'table' or
-        (global_gps_pos.lon == 0.0 and global_gps_pos.lat == 0.0) then
-    if locationIndex == 1 then
-      latHome.title = "---"
-      lonHome.title = "---"
-    end
-    gpsSignal.title = strWaitingForGpsSignal
-    gpsSignal.flags = VCENTER + BOLD + RED
-  else
+  if type(global_gps_pos) == 'table' and
+        (global_gps_pos.lon ~= 0.0 and global_gps_pos.lat ~= 0.0) then
     if locationIndex == 1 then
         global_home_pos.lat = global_gps_pos.lat
         global_home_pos.lon = global_gps_pos.lon
@@ -308,6 +301,13 @@ function gui.fullScreenRefresh()
     end
     gpsSignal.title = strGpsFixLock
     gpsSignal.flags = VCENTER + BOLD + BLACK
+  else
+    if locationIndex == 1 then
+      latHome.title = "---"
+      lonHome.title = "---"
+    end
+    gpsSignal.title = strWaitingForGpsSignal
+    gpsSignal.flags = VCENTER + BOLD + RED
   end
 end
 
@@ -315,6 +315,8 @@ end
 function libGUI.widgetRefresh()
   lcd.drawRectangle(0, 0, zone.w, zone.h, libGUI.colors.primary3)
   lcd.drawText(zone.w / 2, zone.h / 2, "gpsF3xSetup", DBLSIZE + CENTER + VCENTER + libGUI.colors.primary3)
+
+  lcd.drawText(10, 140, "Touch then press ENT full screen mode", BOLD + GREY)
 end
 
 -- This function is called from the refresh(...) function in the main script
