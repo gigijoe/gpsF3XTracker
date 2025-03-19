@@ -181,7 +181,8 @@ local function locationChange(dropDown)
     
     if i == 1 then
         -- if type(global_gps_pos) == 'table' then
-        if global_gps_pos.lon ~= 0.0 or global_gps_pos.lat ~= 0.0 then
+        if type(global_gps_pos) == 'table' and
+                (global_gps_pos.lon ~= 0.0 or global_gps_pos.lat ~= 0.0) then
             global_home_pos.lat = global_gps_pos.lat
             global_home_pos.lon = global_gps_pos.lon
             latHome.title = global_gps_pos.lat
@@ -292,7 +293,12 @@ function gui.fullScreenRefresh()
   
   if type(global_gps_pos) ~= 'table' or
         (global_gps_pos.lon == 0.0 and global_gps_pos.lat == 0.0) then
+    if locationIndex == 1 then
+      latHome.title = "---"
+      lonHome.title = "---"
+    end
     gpsSignal.title = strWaitingForGpsSignal
+    gpsSignal.flags = VCENTER + BOLD + RED
   else
     if locationIndex == 1 then
         global_home_pos.lat = global_gps_pos.lat
@@ -301,6 +307,7 @@ function gui.fullScreenRefresh()
         lonHome.title = global_gps_pos.lon
     end
     gpsSignal.title = strGpsFixLock
+    gpsSignal.flags = VCENTER + BOLD + BLACK
   end
 end
 
