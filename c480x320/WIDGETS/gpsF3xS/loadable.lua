@@ -88,14 +88,7 @@ global_comp_display = global_comp_types[1].display
 strWaitingForGpsSignal = "Waiting for GPS Signal ..."
 strGpsFixLock = "GPS Fix Lock"
 
------------------------------------------------------------
--- Sub GUI
------------------------------------------------------------
-
 local gpsSignal = gui.label(COL1, TOP, 3 * WIDTH, HEIGHT, strWaitingForGpsSignal, BOLD)
-
--- A sub-gui
-local subGUI = gui.gui(COL1, TOP + ROW, COL4 + 3 * WIDTH - COL3, 2 * ROW)
 
 -----------------------------------------------------------
 -- Competition
@@ -107,7 +100,7 @@ for i = 1, #global_comp_types do
 end
 
 -- A drop-down with physical switches
-subGUI.label(0, 0, 2 * WIDTH, HEIGHT, "Competition")
+gui.label(COL1, TOP + ROW, 2 * WIDTH, HEIGHT, "Competition")
 
 local function competitionChange(dropDown)
   local i = dropDown.selected
@@ -117,7 +110,7 @@ local function competitionChange(dropDown)
   global_has_changed = true
 end
 
-local competition = subGUI.dropDown(COL2s, 0, 2 * WIDTH, HEIGHT, competitionItems, 1, competitionChange)
+local competition = gui.dropDown(COL2, TOP + ROW, 2 * WIDTH, HEIGHT, competitionItems, 1, competitionChange)
 
 -----------------------------------------------------------
 -- Location
@@ -144,14 +137,14 @@ local basePath = '/WIDGETS/gpsF3xT/gpstrack/'
 
 -- Horizontal slider
 gui.label(COL1, TOP + 5 * ROW, WIDTH, HEIGHT, "Course Direction:", BOLD)
-local horizontalSliderLabel = gui.label(COL1 + 2 * WIDTH + 12, TOP + 6 * ROW, 30, HEIGHT, "", RIGHT)
+local horizontalSliderLabel = gui.label(COL2 + 12, TOP + 5 * ROW, 30, HEIGHT, "", RIGHT)
 
 local function horizontalSliderCallBack(slider)
   global_home_dir = slider.value
   horizontalSliderLabel.title = slider.value
 end
 
-local horizontalSlider = gui.horizontalSlider(COL1, TOP + 6 * ROW + HEIGHT / 2, 2 * WIDTH, 0, 0, 360, 1, horizontalSliderCallBack)
+local horizontalSlider = gui.horizontalSlider(COL3 - 40, TOP + 5 * ROW + HEIGHT / 2, 2 * WIDTH, 0, 0, 360, 1, horizontalSliderCallBack)
 horizontalSliderCallBack(horizontalSlider)
 
 -----------------------------------------------------------
@@ -167,7 +160,7 @@ for i = 1, #locations do
 end
 
 -- A drop-down with physical switches
-subGUI.label(0, ROW, 3 * WIDTH, HEIGHT, "Location")
+gui.label(COL1, TOP + 2 * ROW, 3 * WIDTH, HEIGHT, "Location")
 
 gui.label(COL1, ROW2, WIDTH, HEIGHT, "Latitude", BOLD)
 gui.label(COL2, ROW2, WIDTH, HEIGHT, "Longitude", BOLD)
@@ -206,7 +199,7 @@ local function locationChange(dropDown)
     global_has_changed = true
 end
 
-local location = subGUI.dropDown(COL2s, ROW, 3 * WIDTH, HEIGHT, locationItems, 1, locationChange)
+local location = gui.dropDown(COL2, TOP + 2 * ROW, 3 * WIDTH, HEIGHT, locationItems, 1, locationChange)
 
 -----------------------------------------------------------
 -- Base A Left / Right

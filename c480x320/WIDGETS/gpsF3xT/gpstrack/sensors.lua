@@ -49,7 +49,8 @@ data.gpsF3x = {
     gpsAlt   = {name = "Alt", id = 0, factor = 1.0},
     gpsCoord = {name = "GPS", id = 0},
     gpsSpeed = {name = "GSpd", id = 0, factor = 1.0},
-    -- gpsSats = {name = "Sats", id = 0},
+    gpsSats = {name = "Sats", id = 0},
+    gpsHdg = {nmae = "Hdg", id = 0}, -- PDOP as Hdg
     -- gpsDate = {name = "Date", id = 0},
     addEle = {name = "ele", id = 0}
 }
