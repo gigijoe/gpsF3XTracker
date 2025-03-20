@@ -144,7 +144,7 @@ local function horizontalSliderCallBack(slider)
   horizontalSliderLabel.title = slider.value
 end
 
-local horizontalSlider = gui.horizontalSlider(COL3 - 40, TOP + 5 * ROW + HEIGHT / 2, 2 * WIDTH, 0, 0, 360, 1, horizontalSliderCallBack)
+local horizontalSlider = gui.horizontalSlider(COL3 - 40, TOP + 5 * ROW + HEIGHT / 2, 5 * WIDTH / 2, 0, 0, 360, 1, horizontalSliderCallBack)
 horizontalSliderCallBack(horizontalSlider)
 
 -----------------------------------------------------------

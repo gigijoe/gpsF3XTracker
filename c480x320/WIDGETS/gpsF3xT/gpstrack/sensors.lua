@@ -50,7 +50,7 @@ data.gpsF3x = {
     gpsCoord = {name = "GPS", id = 0},
     gpsSpeed = {name = "GSpd", id = 0, factor = 1.0},
     gpsSats = {name = "Sats", id = 0},
-    gpsHdg = {nmae = "Hdg", id = 0}, -- PDOP as Hdg
+    gpsHdg = {name = "Hdg", id = 0}, -- PDOP as Hdg
     -- gpsDate = {name = "Date", id = 0},
     addEle = {name = "ele", id = 0}
 }
@@ -132,13 +132,14 @@ function sensor.initializeSensor(data_table)
         if type(fieldInfo) ~= 'table' then
             sensor.err = string.format("Sensor <%s> not found", sensorName)
             print(sensor.err)
-            return false
-        end
-        if fieldInfo.id then
-            sensor.data[name].id = fieldInfo.id
+            -- return false
         else
-            sensor.err = string.format("No ID for sensor name: <%s>", sensorName)
-            return false
+            if fieldInfo.id then
+                sensor.data[name].id = fieldInfo.id
+            else
+                sensor.err = string.format("No ID for sensor name: <%s>", sensorName)
+                --return false
+            end
         end
     end
     return true

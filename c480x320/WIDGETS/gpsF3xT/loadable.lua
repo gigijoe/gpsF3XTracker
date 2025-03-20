@@ -285,7 +285,8 @@ centerOffsetSliderCallBack(centerOffsetSlider)
 
 local startSwitchValue = getValue(startSwitchInfo.id)
 
-local lapItems = {"Lap 1 : ", "Lap 2 : ", "Lap 3 : ", "Lap 4 : ", "Lap 5 : ", "Lap 6 : ", "Lap 7 : ", "Lap 8 : ", "Lap 9 : ", "Lap 10 : "}
+--local lapItems = {"L1 : ", "L2 : ", "L3 : ", "L4 : ", "L5 : ", "L6 : ", "L7 : ", "L8 : ", "L9 : ", "L10 : "}
+local lapItems = {"L1 : "}
 local lapsMenu = gui.menu(COL4, TOP, WIDTH, 9 * HEIGHT, lapItems, nil, GREEN)
 
 local function startSwitchPressed()
@@ -320,31 +321,27 @@ function gui.fullScreenRefresh()
                 if comp.state ~= 1 and comp.runs > 0 and runs ~= comp.runs then
                     -- comp finished by hand
                     runs = comp.runs -- lock update 
-                    -- screen.addLaps(comp.runs, comp.lap - 1)
-                    -- lapsLabel.title = "Lap " .. (comp.lap - 1)
+                    -- screen.addLaps(comp.runs, comp.lap - 1)                    
                 end
             end
             comp.start()
-            
-            for i = 1, #lapItems do
-                lapItems[i] = string.format("Lap %d : ", i)
-            end
+            lapItems = {"L1 : "}
+            lapsMenu.items = lapItems
         end
-     
+--[[     
         if comp.state == 1 and comp.runs > 0 and runs ~= comp.runs then
             runs = comp.runs -- lock update
             if global_comp_type == 'f3b_dist' then
                 -- screen.addLaps(runs, comp.lap - 1)
-                -- lapsLabel.title = "Lap " .. (comp.lap - 1)
             else
                 -- screen.addTime(runs, comp.runtime)
             end
             -- screen.showStack()
         end
-        
+]]--
         integer, decimal_part = math.modf(comp.runtime / 1000)
         timerLabel.title = string.format("%02d:%02d", integer, decimal_part * 100)
-
+        
         courseLabel.title = comp.message
         speedDestLabel.title = string.format("V: %6.2f m/s Dst: %-7.2f m ", course.lastGroundSpeed,  course.lastDistance + comp.centerOffset)
         latLabel.title = global_gps_pos.lat
@@ -357,7 +354,11 @@ function gui.fullScreenRefresh()
         gpsSignal.flags = VCENTER + BOLD + BLACK
         
         if comp.lap > 0 then
-            lapItems[comp.lap] = "Lap "..comp.lap.." : "..timerLabel.title 
+            if global_comp_type == 'f3b_dist' then
+                lapItems[comp.lap] = "L"..comp.lap.." : "..comp.runs
+            else
+                lapItems[comp.lap] = "L"..comp.lap.." : "..timerLabel.title 
+            end
             lapsMenu.items = lapItems
         end
     else
@@ -436,6 +437,14 @@ function refresh()
     centerOffsetSliderCallBack(centerOffsetSlider)
     comp.centerOffset = val
     
+    if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
+      if global_baseA_left then
+        comp.centerOffset = comp.centerOffset + 75
+      else
+        comp.centerOffset = comp.centerOffset - 75
+      end
+    end
+
     if global_has_changed then
         print("Reload Competition ...")
         reloadCompetition()
