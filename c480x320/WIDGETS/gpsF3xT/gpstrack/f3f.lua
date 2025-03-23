@@ -295,7 +295,7 @@ function comp.update(height)
     -------------------------------------------------------
     if comp.state == 30 then
         comp.runtime = comp.lastLap - comp.startTime_ms
-        playNumber((comp.runtime + 50)/ 100., 37, PREC1) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
+        playNumber((comp.runtime + 5)/ 10., 37, PREC2) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
         comp.runs = comp.runs + 1
         comp.state = 0
         return

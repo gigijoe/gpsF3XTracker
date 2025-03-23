@@ -95,10 +95,12 @@ end
 function comp.lapPassed(lap, laptime, lostHeight)
     comp.message = string.format("lap %d: %5.2fs diff: %-5.1fm", lap, laptime/1000.0, lostHeight)
     playNumber(lap,0)
-    playNumber((laptime+50) / 100., 0, PREC1) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
+    playNumber((laptime+5) / 10., 0, PREC2) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
+    --[[
     if math.abs(lostHeight) > 0.5 then
-        playNumber(lostHeight,0,PREC1) -- lost height in meters per lap
+        playNumber(lostHeight,0,PREC2) -- lost height in meters per lap
     end
+    ]]--
 end
 -------------------------------------------------------
 -- Update Competition Status Machine

@@ -311,6 +311,7 @@ function gui.fullScreenRefresh()
             comp.start()
             lapItems = {"L1 : "}
             lapsMenu.items = lapItems
+            comp.lap = 0
         end
 --[[     
         if comp.state == 1 and comp.runs > 0 and runs ~= comp.runs then
@@ -416,7 +417,7 @@ function libGUI.widgetRefresh()
 end
 
 function refresh()
-    local val = getValue(centerSliderInfo.id) / 20
+    local val = getValue(centerSliderInfo.id) / 20.
     if val > 50 then
         val = 50
     elseif val < -50 then
@@ -447,7 +448,7 @@ function refresh()
     end
 
     if global_has_changed then
-        print("Reload Competition ...")
+        -- print("Reload Competition ...")
         reloadCompetition()
         if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
           baseALabel.title = "---"
