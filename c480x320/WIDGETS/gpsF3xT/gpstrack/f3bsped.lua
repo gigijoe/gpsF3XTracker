@@ -21,6 +21,7 @@ function comp.init(mode, startLeft)
     comp.state = 0 -- initial state
     comp.startTime_ms = 0
     comp.lap = 0
+    comp.laptime = 0
     comp.lastLap = 0
     comp.runs = 0
     comp.leftBaseIn = 0
@@ -42,6 +43,7 @@ end
 -- start competition timer 
 function comp.startTimer()
     comp.runtime = 0
+    comp.laptime = 0
     comp.startTime_ms = getTime() * 10
 end
 -- reset all values and start the competition
@@ -49,10 +51,12 @@ function comp.start()
     playTone(800,300,0,PLAY_NOW)
     comp.cleanbases()
     comp.lap = 0
+    comp.runtime = 0
+    comp.laptime = 0
     -- start the status machine
     if comp.state == 1 then
         comp.message = "started..."
-        comp. state = 10
+        comp.state = 10
     else
         comp.message = "canceled..."
         comp.state = 0
@@ -146,6 +150,7 @@ function comp.update(height)
             end
             comp.lapPassed(comp.lap, laptime)
             comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
             comp.state = 27 -- next base must be A
             return
         end
@@ -169,6 +174,7 @@ function comp.update(height)
             end
             comp.lapPassed(comp.lap, laptime)
             comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
             comp.state = 25 -- next base must be B
             return
         end     

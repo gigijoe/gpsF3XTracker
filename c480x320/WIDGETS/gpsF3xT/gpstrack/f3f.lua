@@ -30,6 +30,7 @@ function comp.init(mode, startLeft)
     comp.startTime_ms = 0
     comp.entrystart = 0
     comp.lap = 0
+    comp.laptime = 0
     comp.lastLap = 0
     comp.runs = 0
     comp.leftBaseIn = 0
@@ -68,6 +69,7 @@ end
 function comp.startTimer()
     if comp.startTime_ms == 0 or comp.training == true then
         comp.runtime = 0
+        comp.laptime = 0
         comp.startTime_ms = getTime() * 10
     end
 end
@@ -77,7 +79,8 @@ function comp.start()
     comp.cleanbases()
     comp.lap = 0
     comp.runtime = 0
-    
+    comp.laptime = 0 
+
     if comp.state == 1 then
         comp.message = "started..."
         --[[
@@ -254,6 +257,7 @@ function comp.update(height)
             end
             comp.lapPassed(comp.lap, laptime)
             comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
             comp.state = 27
             return
         end
@@ -280,6 +284,7 @@ function comp.update(height)
             end
             comp.lapPassed(comp.lap, laptime, lostHeight)
             comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
             comp.state = 25
             return
         end     

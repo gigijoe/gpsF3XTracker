@@ -21,6 +21,7 @@ function comp.init(mode, startLeft)
     comp.state = 0 -- initial state
     comp.startTime_ms = 0
     comp.lap = 0
+    comp.laptime = 0
     comp.lastLap = 0
     comp.runs = 0
     comp.leftBaseIn = 0
@@ -63,6 +64,7 @@ end
 -- start competition timer
 function comp.startTimer()
     comp.runtime = 0
+    comp.laptime = 0
     comp.startTime_ms = getTime() * 10
 end
 -- reset all values and start the competition
@@ -76,6 +78,9 @@ function comp.start()
     -- start the status machine
     comp.cleanbases()
     comp.lap = 0
+    comp.runtime = 0
+    comp.laptime = 0 
+
     if comp.state == 1 then
         comp.message = "started..."
         comp.state = 10
@@ -83,6 +88,7 @@ function comp.start()
         comp.message = "cancelled..."
         comp.state = 0
         comp.runtime = 0
+        comp.laptime = 0
     end
 end
 -- messages on base
@@ -155,7 +161,7 @@ function comp.update(height)
     if comp.state == 25 and comp.lap > 0 then
         -- working time exceeded?
         comp.runtime = getTime() * 10 - comp.startTime_ms
-        if comp.runtime > comp.compTime_ms then
+        if comp.runtime >= comp.compTime_ms then
             -- competition ended after 4 minutes
             comp.state = 30
             return
@@ -170,6 +176,7 @@ function comp.update(height)
             comp.cleanbases()
             comp.lapPassed(comp.lap, laptime, lostHeight)
             comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
             comp.state = 27 -- next base must be A
         end
         return
@@ -195,6 +202,7 @@ function comp.update(height)
             comp.cleanbases()
             comp.lapPassed(comp.lap, laptime, lostHeight)
             comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
             comp.state = 25 -- next base must be A
         end     
         return
@@ -203,8 +211,10 @@ function comp.update(height)
     -- 30: END
     -------------------------------------------------------
     if comp.state == 30 then
-        -- playNumber(comp.lap - 1, 0) -- lap count
         playTone(1000,600,0,PLAY_NOW)
+        playNumber(comp.lap - 1, 0) -- lap count
+        
+        comp.runtime = comp.compTime_ms
         comp.runs = comp.runs + 1
         comp.state = 0
         return

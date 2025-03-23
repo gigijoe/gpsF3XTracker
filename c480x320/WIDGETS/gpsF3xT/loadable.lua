@@ -337,11 +337,13 @@ function gui.fullScreenRefresh()
         gpsSignal.title = strGpsFixLock.." ... [ "..global_gps_sensor.gpsSats().." ]"
         gpsSignal.flags = VCENTER + BOLD + BLACK
         
-        if comp.lap > 0 then
+        if comp.lap > 1 then
             if global_comp_type == 'f3b_dist' then
-                lapItems[comp.lap] = "L"..comp.lap.." : "..timerLabel.title
+                -- lapItems[comp.lap] = "L"..comp.lap.." : "..comp.laptime --timerLabel.title 
+                lapItems[comp.lap - 1] = string.format("L %d : %3.2fs", comp.lap - 1, comp.laptime)
             else
-                lapItems[comp.lap] = "L"..comp.lap.." : "..timerLabel.title 
+                -- lapItems[comp.lap] = "L"..comp.lap.." : "..comp.laptime
+                lapItems[comp.lap - 1] = string.format("L %d : %3.2fs", comp.lap - 1, comp.laptime)
             end
             lapsMenu.items = lapItems
         end
@@ -434,14 +436,14 @@ function refresh()
     centerOffsetLabel.title = string.format("%s %.1f m", dirStr, val)
 
     if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
+      course.centerOffset = course.centerOffset - 75 -- Base A located on the left side of center position face to course frame
 --[[
       if global_baseA_left then
-        course.centerOffset = course.centerOffset + 75
-      else
         course.centerOffset = course.centerOffset - 75
+      else
+        course.centerOffset = course.centerOffset + 75
       end
 ]]--
-      course.centerOffset = course.centerOffset - 75
     end
 
     if global_has_changed then

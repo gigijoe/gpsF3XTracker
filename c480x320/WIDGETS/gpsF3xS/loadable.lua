@@ -209,6 +209,7 @@ local location = gui.dropDown(COL2, TOP + 2 * ROW, 3 * WIDTH, HEIGHT, locationIt
 local baseALeft
 
 local function baseAleftChange(self)
+
     if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
         return
     end
