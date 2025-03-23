@@ -253,11 +253,11 @@ reloadCompetition()
 
 local compLabel = gui.label(COL1, TOP, WIDTH, HEIGHT, global_comp_display)
 local baseALabel = gui.label(COL2, TOP, 2 * WIDTH, HEIGHT, "BASE A Left")
-local switchLabel = gui.label(COL3, TOP, 2 * WIDTH, HEIGHT, startSwitchInfo.name)
+local switchLabel = gui.label(COL3, TOP, 2 * WIDTH, HEIGHT, "<"..startSwitchInfo.name.."> / <".. centerSliderInfo.name..">")
 -- local lapsLabel = gui.label(COL4, TOP, 2 * WIDTH, HEIGHT, "Lap ---")
 
 local timerLabel = gui.label(COL1, TOP + ROW, WIDTH, 2 * HEIGHT, "00:00", VCENTER + FONT_38 + YELLOW)
-local gpsSignal = gui.label(COL1, TOP + 3 * ROW, 2 * WIDTH, HEIGHT, strWaitingForGpsSignal, VCENTER + BOLD)
+local gpsSignal = gui.label(COL1, TOP + 3 * ROW, 2 * WIDTH, HEIGHT, strWaitingForGpsSignal, VCENTER + BOLD + RED + BLINK)
 gui.label(COL1, TOP + 4 * ROW, WIDTH, HEIGHT, "Latitude", VCENTER + BOLD)
 gui.label(COL2, TOP + 4 * ROW, WIDTH, HEIGHT, "Longitude", VCENTER + BOLD)
 local latLabel = gui.label(COL1, TOP + 5 * ROW, WIDTH, HEIGHT, "---")
@@ -265,24 +265,8 @@ local lonLabel = gui.label(COL2, TOP + 5 * ROW, WIDTH, HEIGHT, "---")
 local courseLabel = gui.label(COL1, TOP + 6 * ROW, WIDTH, HEIGHT, "center ---")
 local speedDestLabel = gui.label(COL1, TOP + 7 * ROW, WIDTH, HEIGHT, "V: 0.00 m/s Dst:-0.00 m ")
 
-gui.label(COL3, TOP + 3 * ROW, WIDTH, HEIGHT, "Center Offset", VCENTER + BOLD)
+gui.label(COL3, TOP + 4 * ROW, WIDTH, HEIGHT, "Center Offset", VCENTER + BOLD)
 local centerOffsetLabel = gui.label(COL3, TOP + 5 * ROW, WIDTH, HEIGHT, "Center 0 m")
-local function centerOffsetSliderCallBack(slider)
-  comp.centerOffset = slider.value
-  local dirStr = ""
-  if slider.value < 0 then
-     dirStr = "Left"
-  elseif slider.value > 0 then
-     dirStr = "Right"
-  elseif slider.value == 0 then
-     dirStr = "Center"
-  end
-  centerOffsetLabel.title = string.format("%s %d m", dirStr, slider.value)
-end
-
-local centerOffsetSlider = gui.horizontalSlider(COL3, TOP + 4 * ROW + HEIGHT / 2, WIDTH, 0, -50, 50, 1, centerOffsetSliderCallBack)
-centerOffsetSliderCallBack(centerOffsetSlider)
-
 local startSwitchValue = getValue(startSwitchInfo.id)
 
 --local lapItems = {"L1 : ", "L2 : ", "L3 : ", "L4 : ", "L5 : ", "L6 : ", "L7 : ", "L8 : ", "L9 : ", "L10 : "}
@@ -343,7 +327,7 @@ function gui.fullScreenRefresh()
         timerLabel.title = string.format("%02d:%02d", integer, decimal_part * 100)
         
         courseLabel.title = comp.message
-        speedDestLabel.title = string.format("V: %6.2f m/s Dst: %-7.2f m ", course.lastGroundSpeed,  course.lastDistance + comp.centerOffset)
+        speedDestLabel.title = string.format("V: %6.2f m/s Dst: %-7.2f m ", course.lastGroundSpeed,  course.lastDistance)
         latLabel.title = global_gps_pos.lat
         lonLabel.title = global_gps_pos.lon
         latLabel.flags = VCENTER + BLACK
@@ -355,7 +339,7 @@ function gui.fullScreenRefresh()
         
         if comp.lap > 0 then
             if global_comp_type == 'f3b_dist' then
-                lapItems[comp.lap] = "L"..comp.lap.." : "..comp.runs
+                lapItems[comp.lap] = "L"..comp.lap.." : "..timerLabel.title
             else
                 lapItems[comp.lap] = "L"..comp.lap.." : "..timerLabel.title 
             end
@@ -364,7 +348,7 @@ function gui.fullScreenRefresh()
     else
         -- GPS sensor is warming up
         gpsSignal.title = strWaitingForGpsSignal
-        gpsSignal.flags = VCENTER + BOLD + RED
+        gpsSignal.flags = VCENTER + BOLD + RED + BLINK
         latLabel.title = "---"
         lonLabel.title = "---"
         latLabel.flags = VCENTER + LIGHTGREY
@@ -375,8 +359,8 @@ end
 -- Draw in widget mode
 function libGUI.widgetRefresh()
   lcd.drawRectangle(0, 0, zone.w, zone.h, libGUI.colors.primary3)
-  -- lcd.drawText(zone.w / 2, zone.h / 2, "gpsF3xTracker", DBLSIZE + CENTER + VCENTER + libGUI.colors.primary3)
-
+  lcd.drawText(zone.w / 2, zone.h / 2, "gpsF3xTracker", DBLSIZE + CENTER + VCENTER + libGUI.colors.primary3)
+--[[
       -- if gpsOK or debug then  
     if type(global_gps_pos) == 'table' and 
             (global_gps_pos.lat ~= 0.0 and global_gps_pos.lon ~= 0.0) then   
@@ -422,8 +406,11 @@ function libGUI.widgetRefresh()
     else
       lcd.drawText(10, 90, strWaitingForGpsSignal, BOLD + RED)
     end
-
+]]--
     lcd.drawText(10, 140, "Touch then press ENT full screen mode", BOLD + GREY)
+
+    --print("sh = "..startSwitchInfo.id) -- 127
+    --print("s2 = "..centerSliderInfo.id) -- 93
 end
 
 function refresh()
@@ -433,28 +420,42 @@ function refresh()
     elseif val < -50 then
         val = -50
     end
-    centerOffsetSlider.value = val
-    centerOffsetSliderCallBack(centerOffsetSlider)
-    comp.centerOffset = val
-    
+
+    course.centerOffset = val
+
+    local dirStr = ""
+    if val < 0 then
+       dirStr = "Left"
+    elseif val > 0 then
+       dirStr = "Right"
+    elseif val == 0 then
+       dirStr = "Center"
+    end
+    centerOffsetLabel.title = string.format("%s %.1f m", dirStr, val)
+
     if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
+--[[
       if global_baseA_left then
-        comp.centerOffset = comp.centerOffset + 75
+        course.centerOffset = course.centerOffset + 75
       else
-        comp.centerOffset = comp.centerOffset - 75
+        course.centerOffset = course.centerOffset - 75
       end
+]]--
+      course.centerOffset = course.centerOffset - 75
     end
 
     if global_has_changed then
         print("Reload Competition ...")
         reloadCompetition()
-
-        if global_baseA_left then
-            baseALabel.title = "BASE A Left"
-        else
-            baseALabel.title = "BASE A Right"
+        if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
+          baseALabel.title = "---"
+        else  
+          if global_baseA_left then
+              baseALabel.title = "BASE A Left"
+          else
+              baseALabel.title = "BASE A Right"
+          end
         end
-
         global_has_changed = false
     end
     

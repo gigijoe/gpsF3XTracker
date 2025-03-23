@@ -88,7 +88,7 @@ global_comp_display = global_comp_types[1].display
 strWaitingForGpsSignal = "Waiting for GPS Signal ..."
 strGpsFixLock = "GPS Fix Lock"
 
-local gpsSignal = gui.label(COL1, TOP, 3 * WIDTH, HEIGHT, strWaitingForGpsSignal, BOLD)
+local gpsSignal = gui.label(COL1, TOP, 3 * WIDTH, HEIGHT, strWaitingForGpsSignal, VCENTER + BOLD + RED + BLINK)
 
 -----------------------------------------------------------
 -- Competition
@@ -136,15 +136,15 @@ local basePath = '/WIDGETS/gpsF3xT/gpstrack/'
 -----------------------------------------------------------
 
 -- Horizontal slider
-gui.label(COL1, TOP + 5 * ROW, WIDTH, HEIGHT, "Course Direction:", BOLD)
-local horizontalSliderLabel = gui.label(COL2 + 12, TOP + 5 * ROW, 30, HEIGHT, "", RIGHT)
+gui.label(COL1, TOP + 3 * ROW, WIDTH, HEIGHT, "Course Direction:", BOLD)
+local horizontalSliderLabel = gui.label(COL2 + 12, TOP + 3 * ROW, 30, HEIGHT, "", RIGHT)
 
 local function horizontalSliderCallBack(slider)
   global_home_dir = slider.value
   horizontalSliderLabel.title = slider.value
 end
 
-local horizontalSlider = gui.horizontalSlider(COL3 - 40, TOP + 5 * ROW + HEIGHT / 2, 5 * WIDTH / 2, 0, 0, 360, 1, horizontalSliderCallBack)
+local horizontalSlider = gui.horizontalSlider(COL3 - 40, TOP + 3 * ROW + HEIGHT / 2, 5 * WIDTH / 2, 0, 0, 360, 1, horizontalSliderCallBack)
 horizontalSliderCallBack(horizontalSlider)
 
 -----------------------------------------------------------
@@ -162,10 +162,10 @@ end
 -- A drop-down with physical switches
 gui.label(COL1, TOP + 2 * ROW, 3 * WIDTH, HEIGHT, "Location")
 
-gui.label(COL1, ROW2, WIDTH, HEIGHT, "Latitude", BOLD)
-gui.label(COL2, ROW2, WIDTH, HEIGHT, "Longitude", BOLD)
-local latHome = gui.label(COL1, ROW2 + ROW, WIDTH, HEIGHT, "---")
-local lonHome = gui.label(COL2, ROW2 + ROW, WIDTH, HEIGHT, "---")
+gui.label(COL1, TOP + 4 * ROW, WIDTH, HEIGHT, "Latitude", BOLD)
+gui.label(COL2, TOP + 4 * ROW, WIDTH, HEIGHT, "Longitude", BOLD)
+local latHome = gui.label(COL1, TOP + 5 * ROW, WIDTH, HEIGHT, "---")
+local lonHome = gui.label(COL2, TOP + 5 * ROW, WIDTH, HEIGHT, "---")
 
 local locationIndex = 1
 
@@ -209,6 +209,10 @@ local location = gui.dropDown(COL2, TOP + 2 * ROW, 3 * WIDTH, HEIGHT, locationIt
 local baseALeft
 
 local function baseAleftChange(self)
+    if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
+        return
+    end
+
     global_baseA_left = self.value
     if self.value then
         baseALeft.title = "BASE A Left"
@@ -300,7 +304,17 @@ function gui.fullScreenRefresh()
       lonHome.title = "---"
     end
     gpsSignal.title = strWaitingForGpsSignal
-    gpsSignal.flags = VCENTER + BOLD + RED
+    gpsSignal.flags = VCENTER + BOLD + RED + BLINK
+  end
+
+  if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
+    baseALeft.title = "---"
+  else
+    if global_baseA_left then
+        baseALeft.title = "BASE A Left"
+    else
+        baseALeft.title = "BASE A Right"
+    end    
   end
 end
 

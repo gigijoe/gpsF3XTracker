@@ -55,12 +55,12 @@ end
 
 local options = {
   -- If options is changed by the user in the Widget Settings menu, then update will be called with a new options table
-  { "Start_Switch", SOURCE, getSourceIndex("sh") },
-  { "Center_Slider", SOURCE, getSourceIndex("s2") },
+  { "Start_Switch", SOURCE, 127}, -- getSourceIndex("sh")
+  { "Center_Slider", SOURCE, 93 }, -- getSourceIndex("s2")
 }
 
-startSwitchInfo = getFieldInfo("sh")
-centerSliderInfo = getFieldInfo("s2")
+startSwitchInfo = getFieldInfo(127)
+centerSliderInfo = getFieldInfo(93)
 
 local function update(widget, options)
   startSwitchInfo = getFieldInfo(options.Start_Switch)

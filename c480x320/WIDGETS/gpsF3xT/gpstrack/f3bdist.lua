@@ -78,10 +78,11 @@ function comp.start()
     comp.lap = 0
     if comp.state == 1 then
         comp.message = "started..."
-        comp. state = 10
+        comp.state = 10
     else
         comp.message = "cancelled..."
-        comp. state = 0
+        comp.state = 0
+        comp.runtime = 0
     end
 end
 -- messages on base
@@ -202,7 +203,8 @@ function comp.update(height)
     -- 30: END
     -------------------------------------------------------
     if comp.state == 30 then
-        playNumber(comp.lap - 1, 0) -- lap count
+        -- playNumber(comp.lap - 1, 0) -- lap count
+        playTone(1000,600,0,PLAY_NOW)
         comp.runs = comp.runs + 1
         comp.state = 0
         return
