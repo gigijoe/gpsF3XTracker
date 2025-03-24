@@ -269,8 +269,8 @@ gui.label(COL3, TOP + 4 * ROW, WIDTH, HEIGHT, "Center Offset", VCENTER + BOLD)
 local centerOffsetLabel = gui.label(COL3, TOP + 5 * ROW, WIDTH, HEIGHT, "Center 0 m")
 local startSwitchValue = getValue(startSwitchInfo.id)
 
---local lapItems = {"L1 : ", "L2 : ", "L3 : ", "L4 : ", "L5 : ", "L6 : ", "L7 : ", "L8 : ", "L9 : ", "L10 : "}
-local lapItems = {"L1 : "}
+local lapItems = {"L1 : ", "L2 : ", "L3 : ", "L4 : ", "L5 : ", "L6 : ", "L7 : ", "L8 : ", "L9 : ", "L10 : "}
+--local lapItems = {"L1 : "}
 local lapsMenu = gui.menu(COL4, TOP, WIDTH, 9 * HEIGHT, lapItems, nil, GREEN)
 
 local function startSwitchPressed()
@@ -309,8 +309,8 @@ function gui.fullScreenRefresh()
                 end
             end
             comp.start()
-            lapItems = {"L1 : "}
-            lapsMenu.items = lapItems
+            lapItems = {"L1 : ", "L2 : ", "L3 : ", "L4 : ", "L5 : ", "L6 : ", "L7 : ", "L8 : ", "L9 : ", "L10 : "}
+            lapsMenu.reset(lapItems)
             comp.lap = 0
         end
 --[[     
@@ -341,10 +341,10 @@ function gui.fullScreenRefresh()
         if comp.lap > 1 then
             if global_comp_type == 'f3b_dist' then
                 -- lapItems[comp.lap] = "L"..comp.lap.." : "..comp.laptime --timerLabel.title 
-                lapItems[comp.lap - 1] = string.format("L %d : %3.2fs", comp.lap - 1, comp.laptime)
+                lapItems[comp.lap - 1] = string.format("L%d : %3.2fs", comp.lap - 1, comp.laptime)
             else
                 -- lapItems[comp.lap] = "L"..comp.lap.." : "..comp.laptime
-                lapItems[comp.lap - 1] = string.format("L %d : %3.2fs", comp.lap - 1, comp.laptime)
+                lapItems[comp.lap - 1] = string.format("L%d : %3.2fs", comp.lap - 1, comp.laptime)
             end
             lapsMenu.items = lapItems
         end
@@ -417,13 +417,21 @@ function libGUI.widgetRefresh()
 end
 
 function refresh()
+  
     local val = getValue(centerSliderInfo.id) / 20.
     if val > 50 then
         val = 50
     elseif val < -50 then
         val = -50
     end
-
+--[[
+    local val = getValue(centerSliderInfo.id) / 5.
+    if val > 200 then
+        val = 200
+    elseif val < -200 then
+        val = -200
+    end
+]]--
     course.centerOffset = val
 
     local dirStr = ""

@@ -612,9 +612,18 @@ function lib.newGUI()
       end
     end
 
+    function self.reset(items)
+        self.items = items or { "No items!" }
+        self.selected = 1
+        self.firstVisible = 1
+        self.firstVisibleScrolling = 1
+        self.moving = 0
+        self.visibleCount = math.floor(h / lh)
+    end
+
     function self.draw(focused)
       local flags = getFlags(self)
-      local visibleCount = math.min(visibleCount, #self.items)
+      local vc = math.min(visibleCount, #self.items)
       local sel
       local bgColor
       
@@ -625,9 +634,13 @@ function lib.newGUI()
         bgColor = lib.colors.focus
       end
 
-      for i = 0, visibleCount - 1 do
+      for i = 0, vc - 1 do
         local j = firstVisible + i
         local y = y + i * lh
+
+        if j > #self.items then
+            break
+        end
         
         if j == selected then
           gui.drawFilledRectangle(x, y, w, lh, bgColor)
