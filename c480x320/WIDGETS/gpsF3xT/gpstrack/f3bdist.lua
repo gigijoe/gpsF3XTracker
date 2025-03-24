@@ -94,8 +94,8 @@ end
 -- messages on base
 function comp.lapPassed(lap, laptime, lostHeight)
     comp.message = string.format("lap %d: %5.2fs diff: %-5.1fm", lap, laptime/1000.0, lostHeight)
-    playNumber(lap,0)
-    playNumber((laptime+5) / 10., 0, PREC2) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
+    playNumber(lap, 0)
+    playNumber((laptime+5) / 10., UNIT_SECONDS, PREC2) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
     --[[
     if math.abs(lostHeight) > 0.5 then
         playNumber(lostHeight,0,PREC2) -- lost height in meters per lap
@@ -214,8 +214,10 @@ function comp.update(height)
     -------------------------------------------------------
     if comp.state == 30 then
         playTone(1000,600,0,PLAY_NOW)
-        playNumber(comp.lap - 1, 0) -- lap count
-        
+        if comp.lap > 0 then
+            playNumber(comp.lap - 1, 0) -- lap count
+        end
+
         comp.runtime = comp.compTime_ms
         comp.runs = comp.runs + 1
         comp.state = 0

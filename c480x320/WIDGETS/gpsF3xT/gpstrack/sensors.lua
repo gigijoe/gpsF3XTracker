@@ -132,13 +132,13 @@ function sensor.initializeSensor(data_table)
         if type(fieldInfo) ~= 'table' then
             sensor.err = string.format("Sensor <%s> not found", sensorName)
             print(sensor.err)
-            -- return false
+            return false
         else
             if fieldInfo.id then
                 sensor.data[name].id = fieldInfo.id
             else
                 sensor.err = string.format("No ID for sensor name: <%s>", sensorName)
-                --return false
+                return false
             end
         end
     end

@@ -71,7 +71,7 @@ function comp.lapPassed(lap, laptime)
     -- It seems to make sense to have only one interim time
     if lap % 2 == 0 then
         laptime = laptime + lapTimeOdd
-        playNumber((laptime+5) / 10., 0, PREC2) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
+        playNumber((laptime+5) / 10., UNIT_SECONDS, PREC2) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
     else
         -- store laptime on odd lap
         lapTimeOdd = laptime

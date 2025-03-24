@@ -29,6 +29,7 @@ local zone, options = ...
 -- GLOBAL VARIABLES
 global_gps_pos = {lat=0.,lon=0.}
 global_gps_sensor = nil
+global_gps_init = false
 
 -- Miscellaneous constants
 local HEADER = 40
@@ -90,6 +91,7 @@ gps = mydofile(basePath..'gpslib.lua')
 global_gps_sensor = mydofile(basePath..'sensors.lua')
 
 gpsOK = global_gps_sensor.init('gpsF3x')
+global_gps_init = gpsOK
 -- gpsOK = global_gps_sensor.init('gpsV2')
 -- gpsOK = global_gps_sensor.init('logger3')
 -- load course (2 bases)   
@@ -294,6 +296,12 @@ function gui.fullScreenRefresh()
     lcd.drawFilledRectangle(0, 0, LCD_W, HEADER, COLOR_THEME_SECONDARY1)
     lcd.drawText(COL1, HEADER / 2, "gpsF3xTracker", VCENTER + DBLSIZE + libGUI.colors.primary2)
 
+    if not gpsOK then
+        gpsSignal.title = strSensorInitFailed
+        gpsSignal.flags = VCENTER + BOLD + RED + BLINK
+        return
+    end
+
     -- if gpsOK or debug then  
     if type(global_gps_pos) == 'table' and 
             (global_gps_pos.lat ~= 0.0 and global_gps_pos.lon ~= 0.0) then   
@@ -417,14 +425,13 @@ function libGUI.widgetRefresh()
 end
 
 function refresh()
-  
     local val = getValue(centerSliderInfo.id) / 20.
     if val > 50 then
         val = 50
     elseif val < -50 then
         val = -50
     end
---[[
+--[[  
     local val = getValue(centerSliderInfo.id) / 5.
     if val > 200 then
         val = 200

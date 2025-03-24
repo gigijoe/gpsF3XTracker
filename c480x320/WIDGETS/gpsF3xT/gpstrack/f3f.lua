@@ -100,7 +100,8 @@ end
 local lapTimeOdd = 0
 function comp.lapPassed(lap, laptime)
     comp.message = string.format("lap %d: %5.2fs", lap, laptime/1000.)
-    playNumber(lap,0)
+    playNumber(lap, 0)
+    playHaptic(300, 0, PLAY_NOW)
     --[[
     if comp.training then
         -- My friend Markus Meissner wants to have time only on even laps

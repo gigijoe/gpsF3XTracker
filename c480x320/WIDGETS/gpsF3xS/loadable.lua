@@ -85,6 +85,7 @@ global_comp_type = global_comp_types[1].name
 global_comp_display = global_comp_types[1].display
 
 -- GLOBAL CONSTANTS
+strSensorInitFailed = "Sensor init failed !!!"
 strWaitingForGpsSignal = "Waiting for GPS Signal ..."
 strGpsFixLock = "GPS Fix Lock"
 
@@ -289,6 +290,12 @@ function gui.fullScreenRefresh()
   -- GPS position updated in gpsF3xT widget.background(widget)
   -- global_gps_pos = global_gps_sensor.gpsCoord()
   
+    if not global_gps_init then
+        gpsSignal.title = strSensorInitFailed
+        gpsSignal.flags = VCENTER + BOLD + RED + BLINK
+        return
+    end
+
   if type(global_gps_pos) == 'table' and
         (global_gps_pos.lon ~= 0.0 and global_gps_pos.lat ~= 0.0) then
     if locationIndex == 1 then
@@ -297,7 +304,7 @@ function gui.fullScreenRefresh()
         latHome.title = global_gps_pos.lat
         lonHome.title = global_gps_pos.lon
     end
-    gpsSignal.title = strGpsFixLock
+    gpsSignal.title = strGpsFixLock.." ... [ "..global_gps_sensor.gpsSats().." ]"
     gpsSignal.flags = VCENTER + BOLD + BLACK
   else
     if locationIndex == 1 then
