@@ -331,7 +331,7 @@ function libGUI.widgetRefresh()
   lcd.drawRectangle(0, 0, zone.w, zone.h, libGUI.colors.primary3)
   lcd.drawText(zone.w / 2, zone.h / 2, "gpsF3xSetup", DBLSIZE + CENTER + VCENTER + libGUI.colors.primary3)
 
-  lcd.drawText(10, 140, "Touch then press ENT full screen mode", BOLD + GREY)
+  lcd.drawText(10, zone.h - 26, "Touch then press ENT full screen mode", BOLD + GREY)
 end
 
 -- This function is called from the refresh(...) function in the main script

@@ -418,7 +418,7 @@ function libGUI.widgetRefresh()
       lcd.drawText(10, 90, strWaitingForGpsSignal, BOLD + RED)
     end
 ]]--
-    lcd.drawText(10, 140, "Touch then press ENT full screen mode", BOLD + GREY)
+    lcd.drawText(10, zone.h - 26, "Touch then press ENT full screen mode", BOLD + GREY)
 
     --print("sh = "..startSwitchInfo.id) -- 127
     --print("s2 = "..centerSliderInfo.id) -- 93
