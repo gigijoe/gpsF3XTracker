@@ -17,7 +17,12 @@ local comp = {name='f3bdist.lua', baseAleft=true, mode='training', trainig=true,
 function comp.init(mode, startLeft)
     comp.training = false -- not needed
     comp.mode = 'competition' -- not needed
-    comp.baseAleft = true -- always true for F3B
+    -- comp.baseAleft = true -- always true for F3B
+    if startLeft then
+        comp.baseAleft = true
+    else
+        comp.baseAleft = false
+    end
     comp.state = 0 -- initial state
     comp.startTime_ms = 0
     comp.lap = 0
@@ -68,6 +73,7 @@ local lapTimeOdd = 0
 function comp.lapPassed(lap, laptime)
     comp.message = string.format("lap %d: %5.2fs", lap, laptime/1000.)
     playNumber(lap,0)
+    playHaptic(300, 0, PLAY_NOW)
     -- It seems to make sense to have only one interim time
     if lap % 2 == 0 then
         laptime = laptime + lapTimeOdd
@@ -97,15 +103,28 @@ function comp.update(height)
     -- 10: WAIT for BASE A IN/OUT
     -------------------------------------------------------
     if comp.state == 10 then
-        if comp.leftBaseOut > 0 then
-            playTone(800,300,0,PLAY_NOW)
-            comp.cleanbases()
-            comp.message = "out of course"
-            comp.state = 15
-        elseif comp.leftBaseIn > 0 then
-            playTone(800,300,0,PLAY_NOW)
-            comp.message = "in course..."
-            comp.state = 20
+        if comp.baseAleft then
+            if comp.leftBaseOut > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.cleanbases()
+                comp.message = "out of course"
+                comp.state = 15
+            elseif comp.leftBaseIn > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.message = "in course..."
+                comp.state = 20
+            end
+        else
+            if comp.rightBaseOut > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.cleanbases()
+                comp.message = "out of course"
+                comp.state = 15
+            elseif comp.rightBaseIn > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.message = "in course..."
+                comp.state = 20
+            end
         end
         return
     end
@@ -113,11 +132,20 @@ function comp.update(height)
     -- 15: BASE A IN (from outside)
     -------------------------------------------------------
     if comp.state == 15 then
-        if comp.leftBaseIn > 0 then
-            playTone(800,300,0,PLAY_NOW)
-            comp.message = "in course..."
-            comp.state = 20
-            return
+        if comp.baseAleft then
+            if comp.leftBaseIn > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.message = "in course..."
+                comp.state = 20
+                return
+            end
+        else
+            if comp.rightBaseIn > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.message = "in course..."
+                comp.state = 20
+                return
+            end
         end
         return
     end
@@ -129,7 +157,12 @@ function comp.update(height)
         comp.cleanbases()
         comp.lastLap = comp.startTime_ms
         comp.lap = 1
-        comp.state = 25 -- next base must be B
+        -- comp.state = 25 -- next base must be B
+        if comp.baseAleft then
+            comp.state = 25 -- first base is right
+        else
+            comp.state = 27 -- first base is left
+        end
         return
     end
     -------------------------------------------------------
@@ -144,13 +177,13 @@ function comp.update(height)
             playTone(800,300,0,PLAY_NOW)
             comp.lastLap = comp.rightBaseOut
             comp.cleanbases()
-            if comp.lap > 3 then
+            comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
+            if comp.lap > 4 then
                 comp.state = 30
                 return
             end
             comp.lapPassed(comp.lap, laptime)
-            comp.lap = comp.lap + 1
-            comp.laptime = laptime / 1000.
             comp.state = 27 -- next base must be A
             return
         end
@@ -168,13 +201,13 @@ function comp.update(height)
             playTone(800,300,0,PLAY_NOW)
             comp.lastLap = comp.leftBaseOut
             comp.cleanbases()
-            if comp.lap > 3 then
+            comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
+            if comp.lap > 4 then
                 comp.state = 30
                 return
             end
             comp.lapPassed(comp.lap, laptime)
-            comp.lap = comp.lap + 1
-            comp.laptime = laptime / 1000.
             comp.state = 25 -- next base must be B
             return
         end     

@@ -210,11 +210,11 @@ local location = gui.dropDown(COL2, TOP + 2 * ROW, 3 * WIDTH, HEIGHT, locationIt
 local baseALeft
 
 local function baseAleftChange(self)
-
+--[[
     if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
         return
     end
-
+]]--
     global_baseA_left = self.value
     if self.value then
         baseALeft.title = "BASE A Left"
@@ -316,7 +316,11 @@ function gui.fullScreenRefresh()
   end
 
   if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
-    baseALeft.title = "---"
+    if global_baseA_left then
+        baseALeft.title = "BASE A Left"
+    else
+        baseALeft.title = "BASE A Right"
+    end    
   else
     if global_baseA_left then
         baseALeft.title = "BASE A Left"

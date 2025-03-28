@@ -17,7 +17,12 @@ local comp = {name='f3bdist.lua', baseAleft=true, mode='training', trainig=true,
 function comp.init(mode, startLeft)
     comp.training = false -- not needed
     comp.mode = 'competition' -- not needed
-    comp.baseAleft = true -- always true for F3B
+    --comp.baseAleft = true -- always true for F3B
+    if startLeft then
+        comp.baseAleft = true
+    else
+        comp.baseAleft = false
+    end
     comp.state = 0 -- initial state
     comp.startTime_ms = 0
     comp.lap = 0
@@ -96,6 +101,7 @@ function comp.lapPassed(lap, laptime, lostHeight)
     comp.message = string.format("lap %d: %5.2fs diff: %-5.1fm", lap, laptime/1000.0, lostHeight)
     playNumber(lap, 0)
     playNumber((laptime+5) / 10., UNIT_SECONDS, PREC2) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
+    playHaptic(300, 0, PLAY_NOW)
     --[[
     if math.abs(lostHeight) > 0.5 then
         playNumber(lostHeight,0,PREC2) -- lost height in meters per lap
@@ -122,15 +128,28 @@ function comp.update(height)
     -- 10: WAIT for BASE A IN/OUT
     -------------------------------------------------------
     if comp.state == 10 then
-        if comp.leftBaseOut > 0 then
-            playTone(800,300,0,PLAY_NOW)
-            comp.cleanbases()
-            comp.message = "out of course"
-            comp.state = 15 -- wait for base A in event
-        elseif comp.leftBaseIn > 0 then
-            playTone(800,300,0,PLAY_NOW)
-            comp.message = "in course..."
-            comp.state = 20 -- go to start
+        if comp.baseAleft then
+            if comp.leftBaseOut > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.cleanbases()
+                comp.message = "out of course"
+                comp.state = 15 -- wait for base A in event
+            elseif comp.leftBaseIn > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.message = "in course..."
+                comp.state = 20 -- go to start
+            end
+        else
+            if comp.rightBaseOut > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.cleanbases()
+                comp.message = "out of course"
+                comp.state = 15 -- wait for base A in event
+            elseif comp.rightBaseIn > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.message = "in course..."
+                comp.state = 20 -- go to start
+            end
         end
         return
     end
@@ -138,11 +157,20 @@ function comp.update(height)
     -- 15: BASE A IN (from outside)
     -------------------------------------------------------
     if comp.state == 15 then
-        if comp.leftBaseIn > 0 then
-            playTone(800,300,0,PLAY_NOW)
-            comp.message = "in course..."
-            comp.state = 20
-            return
+        if comp.baseAleft then
+            if comp.leftBaseIn > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.message = "in course..."
+                comp.state = 20
+                return
+            end
+        else
+            if comp.rightBaseIn > 0 then
+                playTone(800,300,0,PLAY_NOW)
+                comp.message = "in course..."
+                comp.state = 20
+                return
+            end
         end
         return
     end
@@ -154,7 +182,11 @@ function comp.update(height)
         comp.cleanbases()
         comp.lastLap = comp.startTime_ms
         comp.lap = 1
-        comp.state = 25 -- next base must be B
+        if comp.baseAleft then
+            comp.state = 25 -- first base is right
+        else
+            comp.state = 27 -- first base is left
+        end
         return
     end
     -------------------------------------------------------
@@ -213,7 +245,7 @@ function comp.update(height)
     -- 30: END
     -------------------------------------------------------
     if comp.state == 30 then
-        playTone(1000,600,0,PLAY_NOW)
+        playTone(1000,1000,0,PLAY_NOW) -- 1000Hz, 1000ms duration
         if comp.lap > 0 then
             playNumber(comp.lap - 1, 0) -- lap count
         end

@@ -27,7 +27,7 @@ local libGUI
 function loadGUI()
   if not libGUI then
   -- Loadable code chunk is called immediately and returns libGUI
-  	libGUI = loadScript("/WIDGETS/gpsF3xS/libgui.lua")
+  	libGUI = loadScript("/WIDGETS/LibGUI/libgui.lua")
   end
   
   return libGUI()

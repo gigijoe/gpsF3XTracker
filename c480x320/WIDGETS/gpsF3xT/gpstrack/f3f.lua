@@ -42,7 +42,7 @@ end
 -- play countdown messages
 function comp.countdown(elapsed_milliseconds)
     local milliseconds = 30000 - elapsed_milliseconds
-    local seconds = math.floor(milliseconds / 1000)
+    local seconds = math.floor(milliseconds / 1000) + 1
     -- print(string.format("seconds : %d", seconds))
     if seconds >= 10 and seconds % 10 == 0 then 
         if not comp.played[seconds] then
@@ -50,7 +50,7 @@ function comp.countdown(elapsed_milliseconds)
             comp.played[seconds] = true
         end
     end
-    if seconds > 0 and seconds <= 5 then
+    if seconds >= 0 and seconds <= 10 then
         if not comp.played[seconds] then
             playNumber(seconds,0)
             comp.played[seconds] = true
@@ -75,7 +75,7 @@ function comp.startTimer()
 end
 -- reset all values and start the competition
 function comp.start()
-    playTone(800,300,0,PLAY_NOW)
+    -- playTone(800,300,0,PLAY_NOW)
     comp.cleanbases()
     comp.lap = 0
     comp.runtime = 0
@@ -91,9 +91,12 @@ function comp.start()
         end
         ]]--
         comp.state = 5
+        flushAudio()
+        playFile("/WIDGETS/gpsF3xT/go.wav")
     else
         comp.message = "cancelled..."
         comp.state = 0
+        playFile("/WIDGETS/gpsF3xT/smb_die.wav")
     end
 end
 -- messages on base
@@ -152,7 +155,9 @@ function comp.update(height)
     if comp.state == 10 then
         if comp.baseAleft then
             if comp.leftBaseOut > 0 then
-                playTone(900,300,0,PLAY_NOW)
+                -- playTone(900,300,0,PLAY_NOW)
+                flushAudio()
+                playFile("/WIDGETS/gpsF3xT/outside.wav")
                 comp.cleanbases()
                 comp.message = "out of course"
                 comp.state = 15
@@ -160,7 +165,9 @@ function comp.update(height)
             end
         else
             if comp.rightBaseOut > 0 then
-                playTone(900,300,0,PLAY_NOW)
+                -- playTone(900,300,0,PLAY_NOW)
+                flushAudio()
+                playFile("/WIDGETS/gpsF3xT/outside.wav")
                 comp.cleanbases()
                 comp.message = "out of course"
                 comp.state = 15
@@ -174,6 +181,7 @@ function comp.update(height)
             if comp.startTime_ms == 0 then
                 comp.startTimer()
                 comp.message = "race timer started..."
+                playFile("/WIDGETS/gpsF3xT/smb_warning.wav")
             else
                 comp.runtime =  getTime() * 10 - comp.startTime_ms
             end
@@ -189,14 +197,18 @@ function comp.update(height)
     if comp.state == 15 then
         if comp.baseAleft then
             if comp.leftBaseIn > 0 then
-                playTone(800,300,0,PLAY_NOW)
+                -- playTone(800,300,0,PLAY_NOW)
+                flushAudio()
+                playFile("/WIDGETS/gpsF3xT/rA.wav")
                 comp.message = "in course..."
                 comp.state = 20
                 return
             end
         else
             if comp.rightBaseIn > 0 then
-                playTone(800,300,0,PLAY_NOW)
+                -- playTone(800,300,0,PLAY_NOW)
+                flushAudio()
+                playFile("/WIDGETS/gpsF3xT/rA.wav")
                 comp.message = "in course..."
                 comp.state = 20
                 return
@@ -210,6 +222,7 @@ function comp.update(height)
                 if comp.startTime_ms == 0 then
                     comp.startTimer()
                     comp.message = "timer started..."
+                    -- playFile("/WIDGETS/gpsF3xT/smb_warning.wav")
                 else
                     comp.runtime = getTime() * 10 - comp.startTime_ms
                 end
@@ -243,22 +256,36 @@ function comp.update(height)
         -- working time...
         comp.runtime = getTime() * 10 - comp.startTime_ms  
         -- RIGHT BASE
-        if comp.rightBaseOut  > 0 then
+        if comp.rightBaseOut > 0 then
             local laptime = comp.rightBaseOut - comp.lastLap
+--[[            
             if comp.lap == 9 then
             	playTone(800,300,0,PLAY_NOW)
             else
             	playTone(1000,600,0,PLAY_NOW)
             end
+]]--
             comp.lastLap = comp.rightBaseOut
             comp.cleanbases()
-            if comp.lap > 9 then
+            comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
+            if comp.lap > 10 then
                 comp.state = 30
                 return
             end
+            if comp.baseAleft then
+                if comp.lap == 10 then
+                    flushAudio()
+                    playFile("/WIDGETS/gpsF3xT/rFinal.wav")
+                else
+                    flushAudio()
+                    playFile("/WIDGETS/gpsF3xT/rB.wav")
+                end
+            else
+                flushAudio()
+                playFile("/WIDGETS/gpsF3xT/rA.wav")
+            end
             comp.lapPassed(comp.lap, laptime)
-            comp.lap = comp.lap + 1
-            comp.laptime = laptime / 1000.
             comp.state = 27
             return
         end
@@ -272,20 +299,34 @@ function comp.update(height)
         comp.runtime = getTime() * 10 - comp.startTime_ms
         if comp.leftBaseOut > 0 then
             local laptime = comp.leftBaseOut - comp.lastLap
+--[[
             if comp.lap == 9 then
             	playTone(800,300,0,PLAY_NOW)
             else
             	playTone(1000,600,0,PLAY_NOW)
             end
+]]--
             comp.lastLap = comp.leftBaseOut
             comp.cleanbases()
-            if comp.lap > 9 then
+            comp.lap = comp.lap + 1
+            comp.laptime = laptime / 1000.
+            if comp.lap > 10 then
                 comp.state = 30
                 return
             end
+            if comp.baseAleft then
+                flushAudio()
+                playFile("/WIDGETS/gpsF3xT/rA.wav")
+            else
+                if comp.lap == 10 then
+                    flushAudio()
+                    playFile("/WIDGETS/gpsF3xT/rFinal.wav")
+                else
+                    flushAudio()
+                    playFile("/WIDGETS/gpsF3xT/rB.wav")
+                end
+            end
             comp.lapPassed(comp.lap, laptime, lostHeight)
-            comp.lap = comp.lap + 1
-            comp.laptime = laptime / 1000.
             comp.state = 25
             return
         end     
@@ -295,8 +336,15 @@ function comp.update(height)
     -- END
     -------------------------------------------------------
     if comp.state == 30 then
+        flushAudio()
+        playFile("/WIDGETS/gpsF3xT/rE.wav")
         comp.runtime = comp.lastLap - comp.startTime_ms
         playNumber((comp.runtime + 5)/ 10., 37, PREC2) -- milliseconds * 1000 = seconds * 10 = seconds + 1 decimal
+
+        if comp.runtime < 30000 then
+            playFile("/WIDGETS/gpsF3xT/smb_world_clear.wav")
+        end
+
         comp.runs = comp.runs + 1
         comp.state = 0
         return

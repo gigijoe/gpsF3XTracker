@@ -334,9 +334,16 @@ function gui.fullScreenRefresh()
 ]]--
         integer, decimal_part = math.modf(comp.runtime / 1000)
         timerLabel.title = string.format("%02d:%02d", integer, decimal_part * 100)
-        
         courseLabel.title = comp.message
-        speedDestLabel.title = string.format("V: %6.2f m/s Dst: %-7.2f m ", course.lastGroundSpeed,  course.lastDistance)
+        if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
+          if global_baseA_left then
+            speedDestLabel.title = string.format("V: %6.2f m/s Dst: %-7.2f m ", course.lastGroundSpeed,  course.lastDistance + 75)
+          else
+            speedDestLabel.title = string.format("V: %6.2f m/s Dst: %-7.2f m ", course.lastGroundSpeed,  course.lastDistance - 75)
+          end
+        else
+          speedDestLabel.title = string.format("V: %6.2f m/s Dst: %-7.2f m ", course.lastGroundSpeed,  course.lastDistance)
+        end
         latLabel.title = global_gps_pos.lat
         lonLabel.title = global_gps_pos.lon
         latLabel.flags = VCENTER + BLACK
@@ -425,20 +432,21 @@ function libGUI.widgetRefresh()
 end
 
 function refresh()
+  
     local val = getValue(centerSliderInfo.id) / 20.
     if val > 50 then
         val = 50
     elseif val < -50 then
         val = -50
     end
---[[  
+--[[
     local val = getValue(centerSliderInfo.id) / 5.
     if val > 200 then
         val = 200
     elseif val < -200 then
         val = -200
     end
-]]--
+]]--  
     course.centerOffset = val
 
     local dirStr = ""
@@ -452,14 +460,12 @@ function refresh()
     centerOffsetLabel.title = string.format("%s %.1f m", dirStr, val)
 
     if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
-      course.centerOffset = course.centerOffset - 75 -- Base A located on the left side of center position face to course frame
---[[
+      -- course.centerOffset = course.centerOffset - 75 -- Base A located on the left side of center position face to course frame
       if global_baseA_left then
         course.centerOffset = course.centerOffset - 75
       else
         course.centerOffset = course.centerOffset + 75
       end
-]]--
     end
 
     if global_has_changed then
