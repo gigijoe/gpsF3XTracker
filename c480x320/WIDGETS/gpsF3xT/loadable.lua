@@ -319,6 +319,7 @@ function gui.fullScreenRefresh()
             comp.start()
             lapItems = {"L1 : ", "L2 : ", "L3 : ", "L4 : ", "L5 : ", "L6 : ", "L7 : ", "L8 : ", "L9 : ", "L10 : "}
             -- lapsMenu.reset(lapItems)
+            lapsMenu.items = lapItems
             comp.lap = 0
         end
 --[[     
@@ -432,13 +433,14 @@ function libGUI.widgetRefresh()
 end
 
 function refresh()
-  
+---[[  
     local val = getValue(centerSliderInfo.id) / 20.
     if val > 50 then
         val = 50
     elseif val < -50 then
         val = -50
     end
+--]]--    
 --[[
     local val = getValue(centerSliderInfo.id) / 5.
     if val > 200 then
@@ -446,7 +448,7 @@ function refresh()
     elseif val < -200 then
         val = -200
     end
-]]--  
+--]]--  
     course.centerOffset = val
 
     local dirStr = ""
