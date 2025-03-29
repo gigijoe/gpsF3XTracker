@@ -192,6 +192,7 @@ local function locationChange(dropDown)
         global_home_pos.lon = locations[i].lon
         latHome.title = locations[i].lat
         lonHome.title = locations[i].lon
+        global_home_dir = locations[i].dir
         horizontalSlider.value = locations[i].dir
         horizontalSliderLabel.title = locations[i].dir
     end
