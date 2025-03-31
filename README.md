@@ -1,10 +1,11 @@
-# Support new sensor RCGPS-F3x
 # Support RadioMaster TX16s
-!!! Untested !!!
+
 - Support new sensor RCGPS-F3x
 - Modify for 480x320 color LCD
-- New user interface
+- Fancy user interface & sound
 - Start button on SH 
+- Center offset on S2 
+- For F3F task, setup center position. For F3B task, setup Base A position.
 
 ## Installation
 Copy everything in c480x320/WIDGETS/ folder to `/SCRIPTS/WIDGETS` folder on your SD-Card.
@@ -29,8 +30,8 @@ On gpsF3xTracker view Long press [ ENTER ] to select 'Full screen' to enter main
 
 ![](https://github.com/gigijoe/gpsF3XTracker/blob/main/media/screenshot_tx16s_25-03-15_23-59-36.png)
 
-# Support RadioMaster TX12 MK2 / Boxer
-Tested with RadioMaster TX12 / Boxer Transmitter & ER6 ELRS / ER8G Receiver
+# Support RadioMaster TX12 MK2 / Boxer / Zorro
+Tested with ER6 ELRS / ER8G Receiver
 - Support new sensor RCGPS-F3x
 - Modify for 128x64 BW LCD
 - Start button on SA or SD (Start with Base A left or right)
