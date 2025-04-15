@@ -8,6 +8,7 @@
 -- type 5: f3f debug
 local locations = {
     {name = 'Use "Live" Position and Direction', lat = 0.0, lon = 0.0, dir = 0.0, comp = 1},
+    {name = "Iron mointain TW", lat = 24.3553370, lon = 120.6427390, dir = 309.0, comp = 1},
     {name = "Houlong TW", lat = 24.6002242, lon = 120.8005573, dir = 115.0, comp = 1},
     {name = "Longtan TW", lat = 24.8694265, lon = 121.1822915, dir = 120.0, comp = 1},
     {name = "Parkplatz", lat = 53.550707, lon = 9.923472, dir = 9.0, comp = 5},
