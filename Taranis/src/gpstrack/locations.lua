@@ -8,9 +8,13 @@
 -- type 5: f3f debug
 local locations = {
     {name = 'Use "Live" Position and Direction', lat = 0.0, lon = 0.0, dir = 0.0, comp = 1},
+    {name = "Caussols FR", lat = 43.751503, lon = 6.927499, dir = 173.0, comp = 1},
+    {name = "Caussols B slope FR", lat = 43.752491, lon = 6.913154, dir = 187.0, comp = 1},
+    {name = "Tende South FR", lat = 44.147510, lon = 7.558206, dir = 147.0, comp = 1},
+    {name = "Tende North FR", lat = 44.148132, lon = 7.557855, dir = 334.0, comp = 1},
     {name = "Iron mointain TW", lat = 24.3553370, lon = 120.6427390, dir = 309.0, comp = 1},
     {name = "Houlong TW", lat = 24.6002242, lon = 120.8005573, dir = 115.0, comp = 1},
-    {name = "Longtan TW", lat = 24.8693506, lon = 121.1823482, dir = 120.0, comp = 1},
+    {name = "Longtan TW", lat = 24.8694265, lon = 121.1822915, dir = 120.0, comp = 1},
     {name = "Parkplatz", lat = 53.550707, lon = 9.923472, dir = 9.0, comp = 5},
     {name = "Loechle", lat = 47.701974, lon = 8.3558498, dir = 152.0, comp = 1},
     {name = "Soenderborg", lat = 53.333333, lon = 51.987654, dir = 19.9, comp = 3},

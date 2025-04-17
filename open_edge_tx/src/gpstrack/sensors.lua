@@ -46,10 +46,10 @@ data.gpsV2 = {
 }
 -- RCGPS-F3x with edgeTX / CRSF
 data.rcgpsF3x = {
-    gpsAlt   = {name = "Alt", id = 0, factor = 1.0}, -- For edgeTx
-    -- gpsAlt   = {name = "GAlt", id = 0, factor = 1.0}, -- For FrSky Taranis X9D+
+    gpsAlt   = {name = "Alt", id = 0, factor = 0.01}, -- For edgeTx -- cm to m
+    -- gpsAlt   = {name = "GAlt", id = 0, factor = 0.01}, -- For FrSky Taranis X9D+ -- cm to m
     gpsCoord = {name = "GPS", id = 0},
-    gpsSpeed = {name = "GSpd", id = 0, factor = 1.0},
+    gpsSpeed = {name = "GSpd", id = 0, factor = 0.01}, -- cm/s to ms
     -- gpsDate = {name = "Date", id = 0},
     addEle = {name = "ele", id = 0}
 }
