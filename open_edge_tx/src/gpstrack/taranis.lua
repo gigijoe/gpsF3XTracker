@@ -68,7 +68,7 @@ function sensor.rxbat()
 end
 -- value getter
 function sensor.gpsAlt()
-    return getValue(sensor.data.gpsAlt.id)
+    return getValue(sensor.data.gpsAlt.id) * sensor.data.gpsAlt.factor
 end    
 function sensor.gpsCoord()
     return getValue(sensor.data.gpsCoord.id)

@@ -191,7 +191,7 @@ end
 -------------------------------------------------------------------------
 local pressed = false
 local function startPressed()
-    if tx12mk2 or zorro then
+    if tx12mk2 then
         local startVal = getValue(startBaseALeftSwitchId)
         if startVal > 512 and not pressed then
             if global_baseA_left == false then
@@ -370,12 +370,15 @@ local function init(zone)
         on_simulator = true
     end
      -- I use some Taranis only functions
-    if string.find(radio,"taranis") then
+    if string.find(radio,"x9d+") or string.find(radio,"taranis") then
         taranis = true
+        startSwitchId = getFieldInfo("sh").id  -- start race when this switch is > 1024
     elseif string.find(radio,"tx12mk2") then
         tx12mk2 = true;
+        startSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
     elseif string.find(radio,"zorro") then
         zorro = true;
+        startSwitchId = getFieldInfo("sh").id  -- start race when this switch is > 1024
     elseif string.find(radio,"boxer") then
         boxer = true
         startSwitchId = getFieldInfo("sf").id  -- start race when this switch is > 1024
@@ -390,7 +393,11 @@ local function init(zone)
         screen.resize(zone.x, zone.y, zone.w, zone.h)
     end
     -- load sensor 
-    sensor = mydofile(basePath..'sensors.lua')
+    if taranis then
+        sensor = mydofile(basePath..'taranis.lua')
+    else
+        sensor = mydofile(basePath..'sensors.lua')
+    end
     gpsOK = sensor.init('rcgpsF3x')
     -- gpsOK = sensor.init('gpsV2')
     -- gpsOK = sensor.init('logger3')
