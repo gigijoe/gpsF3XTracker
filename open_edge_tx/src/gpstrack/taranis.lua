@@ -49,7 +49,8 @@ data.rcgpsF3x = {
     -- gpsAlt   = {name = "Alt", id = 0, factor = 0.01}, -- For edgeTx -- cm to m
     gpsAlt   = {name = "GAlt", id = 0, factor = 0.01}, -- For FrSky Taranis X9D+ -- cm to m
     gpsCoord = {name = "GPS", id = 0},
-    gpsSpeed = {name = "GSpd", id = 0, factor = 0.00051444}, -- (1000 * knots to m/s)
+    -- gpsSpeed = {name = "GSpd", id = 0, factor = 0.00051444}, -- (1000 * knots to m/s)
+    gpsSpeed = {name = "GSpd", id = 0, factor = 0.01}, -- (cm/s to m/s)
     -- gpsDate = {name = "Date", id = 0},
     addEle = {name = "ele", id = 0}
 }
