@@ -253,6 +253,9 @@ local verticalSlider = aboutPrompt.verticalSlider(LCD_W - 60, 80, LCD_H - 130, #
 
 reloadCompetition()
 
+startSwitchInfo = getFieldInfo("sh")
+centerSliderInfo = getFieldInfo("s2")
+
 local compLabel = gui.label(COL1, TOP, WIDTH, HEIGHT, global_comp_display)
 local baseALabel = gui.label(COL2, TOP, 2 * WIDTH, HEIGHT, "BASE A Left")
 local switchLabel = gui.label(COL3, TOP, 2 * WIDTH, HEIGHT, "<"..startSwitchInfo.name.."> / <".. centerSliderInfo.name..">")
@@ -276,6 +279,8 @@ local lapItems = {"L1 : ", "L2 : ", "L3 : ", "L4 : ", "L5 : ", "L6 : ", "L7 : ",
 local lapsMenu = gui.menu(COL4, TOP, WIDTH, 9 * HEIGHT, lapItems, nil, GREEN)
 
 local function startSwitchPressed()
+    startSwitchInfo = getFieldInfo("sh")
+
     local val = getValue(startSwitchInfo.id)
     if startSwitchValue ~= val then
         -- print(string.format("SH : %d", val))
@@ -433,6 +438,7 @@ function libGUI.widgetRefresh()
 end
 
 function refresh()
+    centerSliderInfo = getFieldInfo("s2")
 ---[[  
     local val = getValue(centerSliderInfo.id) / 20.
     if val > 50 then

@@ -39,6 +39,11 @@ end
 -- the amount of memory consumed when the widget is not being used.      --
 -- You do not need to run the widget to use the library.                 --
 ---------------------------------------------------------------------------
+local options = {
+  -- If options is changed by the user in the Widget Settings menu, then update will be called with a new options table
+  { "Start_Sw", SOURCE, getSourceIndex("sh") },
+  { "Center_Slider", SOURCE, getSourceIndex("s2") },
+}
 
 local function create(zone, options)
   -- Loadable code chunk is called immediately and returns a widget table
@@ -53,18 +58,14 @@ local function background(widget)
   widget.background(widget)
 end
 
-local options = {
-  -- If options is changed by the user in the Widget Settings menu, then update will be called with a new options table
-  { "Start_Switch", SOURCE, getSourceIndex("sh") },
-  { "Center_Slider", SOURCE, getSourceIndex("s2") },
-}
-
-startSwitchInfo = getFieldInfo("sh")
-centerSliderInfo = getFieldInfo("s2")
+--startSwitchInfo = getFieldInfo("sh")
+--centerSliderInfo = getFieldInfo("s2")
 
 local function update(widget, options)
-  startSwitchInfo = getFieldInfo(options.Start_Switch)
-  centerSliderInfo = getFieldInfo(options.Center_Slider)
+  --startSwitchInfo = getFieldInfo(options.Start_Switch)
+  --centerSliderInfo = getFieldInfo(options.Center_Slider)
+-- Runs if options are changed from the Widget Settings menu
+  widget.options = options
 end
 
 return {
