@@ -231,6 +231,7 @@ baseALeft = gui.toggleButton(COL1, TOP + 7 * ROW, 2 * WIDTH, HEIGHT, "BASE A Lef
 -- Prompt showing About text
 local aboutPage = 1
 local aboutText = {
+--[[  
   "LibGUI is a Lua library for creating graphical user interfaces for Lua widgets on EdgeTX transmitters with color screens. " ..
   "It is a code library embedded in a widget. Since all Lua widgets are always loaded into memory, whether they are used or not, " ..
   "the global function named 'loadGUI()', defined in the 'main.lua' file of this widget, is always available to be used by other widgets.",
@@ -243,13 +244,17 @@ local aboutText = {
   "the 'loadable.lua' file in the widget folder to see for yourself how this demo is loading LibGUI and using it, so you can start " ..
   "creating your own awesome widgets!",
    "Copyright (C) EdgeTX\n\nLicensed under GNU Public License V2:\nwww.gnu.org/licenses/gpl-2.0.html\n\nAuthored by Jesper Frickmann."
+]]--
+  "MIT License\n\n" ..
+  "Copyright (c) 2024 Axel Barnitzke\n" ..
+  "Copyright (c) 2025 Steve Chang"
 }
 
 local aboutPrompt = libGUI.newGUI()
 
 function aboutPrompt.fullScreenRefresh()
   lcd.drawFilledRectangle(40, 30, LCD_W - 80, 30, COLOR_THEME_SECONDARY1)
-  lcd.drawText(50, 45, "About LibGUI  " .. aboutPage .. "/" .. #aboutText, VCENTER + MIDSIZE + libGUI.colors.primary2)
+  lcd.drawText(50, 45, "About gpsF3XTracker  " .. aboutPage .. "/" .. #aboutText, VCENTER + MIDSIZE + libGUI.colors.primary2)
   lcd.drawFilledRectangle(40, 60, LCD_W - 80, LCD_H - 90, libGUI.colors.primary2)
   lcd.drawRectangle(40, 30, LCD_W - 80, LCD_H - 60, libGUI.colors.primary1, 2)
   lcd.drawTextLines(50, 70, LCD_W - 120, LCD_H - 110, aboutText[aboutPage])

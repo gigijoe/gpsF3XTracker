@@ -210,8 +210,8 @@ local aboutText = {
   "creating your own awesome widgets!",
    "Copyright (C) EdgeTX\n\nLicensed under GNU Public License V2:\nwww.gnu.org/licenses/gpl-2.0.html\n\nAuthored by Jesper Frickmann."
 ]]--
-  "MIT License\n" ..
-  "Copyright (c) 2024 Axel Barnitzke\n\n"
+  "MIT License\n\n" ..
+  "Copyright (c) 2024 Axel Barnitzke\n" ..
   "Copyright (c) 2025 Steve Chang"
 }
 
