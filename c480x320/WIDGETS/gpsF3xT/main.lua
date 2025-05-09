@@ -41,8 +41,8 @@ end
 ---------------------------------------------------------------------------
 local options = {
   -- If options is changed by the user in the Widget Settings menu, then update will be called with a new options table
-  { "Start_Sw", SOURCE, getSourceIndex("sh") },
-  { "Center_Slider", SOURCE, getSourceIndex("s2") },
+  -- { "Start_Sw", SOURCE, getSourceIndex("sh") },
+  -- { "Center_Slider", SOURCE, getSourceIndex("s2") },
 }
 
 local function create(zone, options)

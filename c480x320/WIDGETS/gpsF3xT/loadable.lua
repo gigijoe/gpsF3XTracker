@@ -196,6 +196,7 @@ end
 -- Prompt showing About text
 local aboutPage = 1
 local aboutText = {
+--[[  
   "LibGUI is a Lua library for creating graphical user interfaces for Lua widgets on EdgeTX transmitters with color screens. " ..
   "It is a code library embedded in a widget. Since all Lua widgets are always loaded into memory, whether they are used or not, " ..
   "the global function named 'loadGUI()', defined in the 'main.lua' file of this widget, is always available to be used by other widgets.",
@@ -208,6 +209,10 @@ local aboutText = {
   "the 'loadable.lua' file in the widget folder to see for yourself how this demo is loading LibGUI and using it, so you can start " ..
   "creating your own awesome widgets!",
    "Copyright (C) EdgeTX\n\nLicensed under GNU Public License V2:\nwww.gnu.org/licenses/gpl-2.0.html\n\nAuthored by Jesper Frickmann."
+]]--
+  "MIT License\n" ..
+  "Copyright (c) 2024 Axel Barnitzke\n\n"
+  "Copyright (c) 2025 Steve Chang"
 }
 
 local aboutPrompt = libGUI.newGUI()
@@ -253,8 +258,8 @@ local verticalSlider = aboutPrompt.verticalSlider(LCD_W - 60, 80, LCD_H - 130, #
 
 reloadCompetition()
 
-startSwitchInfo = getFieldInfo("sh")
-centerSliderInfo = getFieldInfo("s2")
+local startSwitchInfo = getFieldInfo("sh")
+local centerSliderInfo = getFieldInfo("s2")
 
 local compLabel = gui.label(COL1, TOP, WIDTH, HEIGHT, global_comp_display)
 local baseALabel = gui.label(COL2, TOP, 2 * WIDTH, HEIGHT, "BASE A Left")
@@ -279,7 +284,7 @@ local lapItems = {"L1 : ", "L2 : ", "L3 : ", "L4 : ", "L5 : ", "L6 : ", "L7 : ",
 local lapsMenu = gui.menu(COL4, TOP, WIDTH, 9 * HEIGHT, lapItems, nil, GREEN)
 
 local function startSwitchPressed()
-    startSwitchInfo = getFieldInfo("sh")
+    local startSwitchInfo = getFieldInfo("sh")
 
     local val = getValue(startSwitchInfo.id)
     if startSwitchValue ~= val then
@@ -438,7 +443,7 @@ function libGUI.widgetRefresh()
 end
 
 function refresh()
-    centerSliderInfo = getFieldInfo("s2")
+    local centerSliderInfo = getFieldInfo("s2")
 ---[[  
     local val = getValue(centerSliderInfo.id) / 20.
     if val > 50 then
