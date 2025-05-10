@@ -46,7 +46,7 @@ data.gpsV2 = {
 }
 -- RCGPS-F3x with edgeTX / CRSF
 data.gpsF3x = {
-    gpsAlt   = {name = "Alt", id = 0, factor = 1.0},
+    gpsAlt   = {name = "Alt", id = 0, factor = 0.01}, -- cm to m
     gpsCoord = {name = "GPS", id = 0},
     gpsSpeed = {name = "GSpd", id = 0, factor = 0.01}, -- cm/s to ms
     gpsSats = {name = "Sats", id = 0},
@@ -69,7 +69,7 @@ function sensor.rxbat()
 end
 -- value getter
 function sensor.gpsAlt()
-    return getValue(sensor.data.gpsAlt.id)
+    return getValue(sensor.data.gpsAlt.id) * sensor.data.gpsAlt.factor
 end    
 function sensor.gpsCoord()
     return getValue(sensor.data.gpsCoord.id)
