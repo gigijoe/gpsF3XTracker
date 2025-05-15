@@ -61,6 +61,7 @@ function course.init(courseLength, courseDirection, competition)
     course.useCorrection = false -- use the lookahead function  
 	course.correctionFactor = 0.1  -- empiric value (F. Schreiber)
     course.text = ''
+    course.centerOffset = 0
 end
 function course.output(text)
     course.message = text
@@ -80,7 +81,7 @@ function course.update(distance, bearing, groundspeed, acceleration)
         if deltaBearing < 0. then
             deltaBearing = 2*math.pi + deltaBearing
         end
-        course.Distance = distance * math.cos(deltaBearing)
+        course.Distance = distance * math.cos(deltaBearing) + course.centerOffset
         course.delta = course.Distance - course.lastDistance
         -- save last valid gps status
         course.lastDistance = course.Distance
@@ -100,7 +101,7 @@ function course.update(distance, bearing, groundspeed, acceleration)
             course.delta = -course.delta 
         end
         -- estimate the distance by v0 and acceleration only
-        course.Distance = course.lastDistance + course.delta  
+        course.Distance = course.lastDistance + course.delta + course.centerOffset
         -- print(string.format("az-mode: az:%6.2f delta:%6.2f dist:%6.2f", az, course.delta, course.Distance))
     end
     -- evaluate only if object is moving

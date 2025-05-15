@@ -286,6 +286,8 @@ local function init(zone)
     -- I use some Taranis only functions
     if string.find(radio,"x9d+") or string.find(radio,"taranis") then
         taranis = true
+        --sliderId = getFieldInfo("ls").id
+        --slider2Id = getFieldInfo("rs").id
     end
     -- load locations table  
     locations = mydofile(basePath..'locations.lua')

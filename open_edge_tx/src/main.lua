@@ -276,6 +276,26 @@ local function run(event)
         screen.text(2, text)
         screen.showStack()
     end
+
+    local centerOffsetSlider = getFieldInfo("ls")
+---[[  
+    local val = getValue(centerOffsetSlider.id) / 20.
+    if val > 50 then
+        val = 50
+    elseif val < -50 then
+        val = -50
+    end
+--]]--    
+--[[
+    local val = getValue(centerSliderInfo.id) / 5.
+    if val > 200 then
+        val = 200
+    elseif val < -200 then
+        val = -200
+    end
+--]]--  
+    course.centerOffset = val
+
     -------------------------------------------------------
     -- draw continous updated values
     -------------------------------------------------------
@@ -319,7 +339,7 @@ local function run(event)
                 -- line 2: General Info
                 screen.text(2, string.format("Runtime: %5.2fs",comp.runtime/1000.0))
                 -- line 3: Course state
-                screen.text(3, "Course: " .. course.message)
+                screen.text(3, "Course: " .. course.message .. " CO: " .. course.centerOffset .. "m")
                 -- line 4: course information
                 screen.text(4, string.format("V: %6.2f m/s Dst: %-7.2f m ",course.lastGroundSpeed, course.lastDistance))
                 screen.text(5, string.format("H: %5.2fm DR: %2.1f Hz ",comp.groundHeight, rate))
@@ -331,6 +351,7 @@ local function run(event)
             screen.text(4, "GPS: no data")
         end
     else
+        screen.text(3, "Center Offset: " .. course.centerOffset .. "m")
         -- sensor not defined/connected
         if string.len(sensor.err) > 0 then
             screen.text(5, "GPS: " .. sensor.err, INVERS+BLINK)
