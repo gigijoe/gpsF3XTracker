@@ -10,53 +10,53 @@ local sensor = {data = nil, name = 'none', err=''}
 local data = {}
 -- GPS-Logger3 from SM Modelbau with factory defaults
 data.logger3 = {
-    baroAlt  = {name = "Alt", id = 0, factor = 1.0},
-    gpsAlt   = {name = "GAlt", id = 0, factor = 1.0},
-    gpsCoord = {name = "GPS", id = 0},
-    gpsSpeed = {name = "GSpd", id = 0, factor = 1.0/3.6}, -- sensor data is in km/h
-    gpsDate = {name = "Date", id = 0},
-    gpsDist = {name = "0860", id = 0, factor = 1.0},
-    gpsSats = {name = "0870", id = 0, factor = 1.0},
+    baroAlt  = {name = {"GAlt", "Alt"}, id = 0, factor = 1.0},
+    gpsAlt   = {name = {"GAlt"}, id = 0, factor = 1.0},
+    gpsCoord = {name = {"GPS"}, id = 0},
+    gpsSpeed = {name = {"GSpd"}, id = 0, factor = 1.0/3.6}, -- sensor data is in km/h
+    gpsDate = {name = {"Date"}, id = 0},
+    gpsDist = {name = {"0860"}, id = 0, factor = 1.0},
+    gpsSats = {name = {"0870"}, id = 0, factor = 1.0},
     -- gpsClimb = {name = "0880", id = 0, factor = 1.0},
-    gpsDir = {name = "0890", id = 0},
+    gpsDir = {name = {"0890"}, id = 0},
     -- gpsRelDir = {name = "08A0", id = 0},
     -- VClimb = {name = "08B0", id = 0, factor = 1.0},
     -- Distance = {name = "Fpat", id = 0, factor = 1.0},
-    ax = {name = "AccX", id = 0, factor = 1.0},
-    ay = {name = "AccY", id = 0, factor = 1.0},
-    az = {name = "AccZ", id = 0, factor = 1.0}
+    ax = {name = {"AccX"}, id = 0, factor = 1.0},
+    ay = {name = {"AccY"}, id = 0, factor = 1.0},
+    az = {name = {"AccZ"}, id = 0, factor = 1.0}
 }
 -- Any GPS Sensor with internal gyro
 data.gps_with_gyro = {
-    gpsAlt   = {name = "GAlt", id = 0, factor = 1.0},
-    gpsCoord = {name = "GPS", id = 0},
-    gpsSpeed = {name = "GSpd", id = 0, factor = 1.0/3.6}, -- sensor data is in km/h
-    gpsDate = {name = "Date", id = 0},
-    ax = {name = "AccX", id = 0, factor = 1.0},
-    ay = {name = "AccY", id = 0, factor = 1.0},
-    az = {name = "AccZ", id = 0, factor = 1.0}
+    gpsAlt   = {name = {"GAlt", "Alt"}, id = 0, factor = 1.0},
+    gpsCoord = {name = {"GPS"}, id = 0},
+    gpsSpeed = {name = {"GSpd"}, id = 0, factor = 1.0/3.6}, -- sensor data is in km/h
+    gpsDate = {name = {"Date"}, id = 0},
+    ax = {name = {"AccX"}, id = 0, factor = 1.0},
+    ay = {name = {"AccY"}, id = 0, factor = 1.0},
+    az = {name = {"AccZ"}, id = 0, factor = 1.0}
 }
 -- GPS V2 from FRSky
 data.gpsV2 = {
-    gpsAlt   = {name = "GAlt", id = 0, factor = 1.0},
-    gpsCoord = {name = "GPS", id = 0},
-    gpsSpeed = {name = "GSpd", id = 0, factor = 1.0},
-    gpsDate = {name = "Date", id = 0},
-    addEle = {name = "ele", id = 0}
+    gpsAlt   = {name = {"GAlt", "Alt"}, id = 0, factor = 1.0},
+    gpsCoord = {name = {"GPS"}, id = 0},
+    gpsSpeed = {name = {"GSpd"}, id = 0, factor = 1.0},
+    gpsDate = {name = {"Date"}, id = 0},
+    addEle = {name = {"ele"}, id = 0}
 }
 -- RCGPS-F3x with edgeTX / CRSF
 data.rcgpsF3x = {
-    gpsAlt   = {name = "Alt", id = 0, factor = 0.01}, -- For edgeTx -- cm to m
+    gpsAlt   = {name = {"GAlt", "Alt"}, id = 0, factor = 0.01}, -- For FrSky Taranis X9D+ Alt, For edgeTx GAlt / cm to m 
     -- gpsAlt   = {name = "GAlt", id = 0, factor = 0.01}, -- For FrSky Taranis X9D+ -- cm to m
-    gpsCoord = {name = "GPS", id = 0},
-    gpsSpeed = {name = "GSpd", id = 0, factor = 0.01}, -- cm/s to ms
+    gpsCoord = {name = {"GPS"}, id = 0},
+    gpsSpeed = {name = {"GSpd"}, id = 0, factor = 0.01}, -- cm/s to ms
     -- gpsDate = {name = "Date", id = 0},
-    addEle = {name = "ele", id = 0}
+    addEle = {name = {"ele"}, id = 0}
 }
 -- debugging
 data.testUnit = {
-    rssi   = {name = "RSSI", id = 0},
-    rxbat = {name = "RxBt", id = 0}
+    rssi   = {name = {"RSSI"}, id = 0},
+    rxbat = {name = {"RxBt"}, id = 0}
 }
 
 -- debug value getter
@@ -123,6 +123,7 @@ end
 
 -- read the field infos for all sensors of the telemetry unit 
 function sensor.initializeSensor(data_table)
+--[[    
     sensor.data = data_table
     for name in pairs(sensor.data) do
         local sensorName = sensor.data[name].name
@@ -140,6 +141,57 @@ function sensor.initializeSensor(data_table)
             return false
         end
     end
+]]--
+    sensor.data = data_table
+    for name in pairs(sensor.data) do
+        local name_array = {}
+        -- we can have a lot of different options for one sensor name
+        local name_array = sensor.data[name].name
+        --if type(name_option) == 'table' then
+        --    name_array = name_option
+        --else
+        --    name_array[1] = name_option
+        --end
+        local sensor_found = false
+        local fieldInfo
+        local sensorName
+        -- try all different names until one fits
+        for key,sname in pairs(name_array) do
+            -- is there a fied info for that name?
+            fieldInfo = getFieldInfo(sname)
+            if type(fieldInfo) == 'table' then
+                -- if yes, stop searching
+                sensor_found = true
+                sensorName = sname
+                break
+            else
+                print("<<"..sname..">> missing") 
+                sensor.err = string.format("Sensor <%s> not found", sname)
+            end
+        end
+        -- if there is no sensor found, we can stop here
+        if not sensor_found then
+            return
+        end
+        if fieldInfo.id then
+            print("<<"..sensorName..">> found") 
+            -- create a new sensor if needed
+            --[[
+            if not sensor.data[name] then
+                sensor.data[name] = {}
+            end
+            -- initialize all fields
+            sensor.data[name].name = sensorName
+            if data[name].factor then
+                sensor.data[name].factor = data[name].factor
+            end
+            ]]--
+            sensor.data[name].id = fieldInfo.id
+        else
+            sensor.err = string.format("No ID for sensor name: <%s>", sensorName)
+            return false
+        end
+    end    
     return true
 end
 -- setup the telemetry unit
