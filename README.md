@@ -67,6 +67,7 @@ This version is modularized as much as possible.
 ## Usage 
 - use `S1` to change the course bearing
 - use `S2` to change the competition type
+- use 'LS' to adjust center offset of course
 - use `rud`left/right to change the base A location (F3F only)
 - use scrollbar plus/minus buttons to choose a predefined location.
 - user `ENTER` to activate the changes from the setup screen.
