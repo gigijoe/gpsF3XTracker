@@ -11,6 +11,7 @@ functions: ---------------------------------------------------------------------
 local startSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
 local startBaseALeftSwitchId = getFieldInfo("sa").id  -- start race when this switch is > 1024
 local startBaseARightSwitchId = getFieldInfo("sd").id  -- start race when this switch is > 1024
+local centerOffsetSliderId = getFieldInfo("ls")
 
 -- GLOBAL VARIABLES (don't change)
 global_gps_pos = {lat=0.,lon=0.}
@@ -277,25 +278,25 @@ local function run(event)
         screen.showStack()
     end
 
-    local centerOffsetSlider = getFieldInfo("ls")
+    if centerOffsetSliderId ~= nil then 
 ---[[  
-    local val = getValue(centerOffsetSlider.id) / 20.
-    if val > 50 then
-        val = 50
-    elseif val < -50 then
-        val = -50
-    end
+        local val = getValue(centerOffsetSliderId.id) / 20.
+        if val > 50 then
+            val = 50
+        elseif val < -50 then
+            val = -50
+        end
 --]]--    
 --[[
-    local val = getValue(centerSliderInfo.id) / 5.
-    if val > 200 then
-        val = 200
-    elseif val < -200 then
-        val = -200
-    end
+        local val = getValue(centerSliderInfo.id) / 5.
+        if val > 200 then
+            val = 200
+        elseif val < -200 then
+            val = -200
+        end
 --]]--  
-    course.centerOffset = val
-
+        course.centerOffset = val
+    end
     -------------------------------------------------------
     -- draw continous updated values
     -------------------------------------------------------
