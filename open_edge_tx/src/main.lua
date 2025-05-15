@@ -340,7 +340,11 @@ local function run(event)
                 -- line 2: General Info
                 screen.text(2, string.format("Runtime: %5.2fs",comp.runtime/1000.0))
                 -- line 3: Course state
-                screen.text(3, "Course: " .. course.message .. " CO: " .. course.centerOffset .. "m")
+                if centerOffsetSliderId ~= nil then
+                    screen.text(3, "Course: " .. course.message)
+                else
+                    screen.text(3, "Course: " .. course.message .. " CO: " .. course.centerOffset .. "m")
+                end
                 -- line 4: course information
                 screen.text(4, string.format("V: %6.2f m/s Dst: %-7.2f m ",course.lastGroundSpeed, course.lastDistance))
                 screen.text(5, string.format("H: %5.2fm DR: %2.1f Hz ",comp.groundHeight, rate))
@@ -348,11 +352,16 @@ local function run(event)
                 -- screen.text(5, string.format("GPS: %9.6f %9.6f",global_gps_pos.lat,global_gps_pos.lon))  
             end
         else
+            if centerOffsetSliderId ~= nil then
+                screen.text(3, "Course: " .. course.message)
+            end
             -- GPS sensor is warming up
             screen.text(4, "GPS: no data")
         end
     else
-        screen.text(3, "Center Offset: " .. course.centerOffset .. "m")
+        if centerOffsetSliderId ~= nil then
+            screen.text(3, "Center Offset: " .. course.centerOffset .. "m")
+        end
         -- sensor not defined/connected
         if string.len(sensor.err) > 0 then
             screen.text(5, "GPS: " .. sensor.err, INVERS+BLINK)
