@@ -423,15 +423,13 @@ local function init(zone)
     if zone and type(zone) == 'table' then
         screen.resize(zone.x, zone.y, zone.w, zone.h)
     end
-    -- load sensor 
---[[    
+    -- load sensor  
     if taranis then
         sensor = mydofile(basePath..'taranis.lua')
     else
         sensor = mydofile(basePath..'sensors.lua')
     end
-]]--
-    sensor = mydofile(basePath..'sensors.lua')
+    -- sensor = mydofile(basePath..'sensors.lua')
 
     gpsOK = sensor.init('rcgpsF3x')
     -- gpsOK = sensor.init('gpsV2')
