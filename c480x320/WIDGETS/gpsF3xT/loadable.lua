@@ -262,6 +262,13 @@ reloadCompetition()
 local startSwitchInfo = getFieldInfo("sh")
 local centerSliderInfo = getFieldInfo("s2")
 
+local ver, radio, maj, minor, rev = getVersion()
+if string.find(radio,"t15") or string.find(radio,"t15-simu") then
+  startSwitchInfo = getFieldInfo("sf")
+end
+
+print(radio) 
+
 local compLabel = gui.label(COL1, TOP, WIDTH, HEIGHT, global_comp_display)
 local baseALabel = gui.label(COL2, TOP, 2 * WIDTH, HEIGHT, "BASE A Left")
 local switchLabel = gui.label(COL3, TOP, 2 * WIDTH, HEIGHT, "<"..startSwitchInfo.name.."> / <".. centerSliderInfo.name..">")
@@ -485,7 +492,7 @@ function refresh()
     if global_has_changed then
         -- print("Reload Competition ...")
         reloadCompetition()
-        if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
+      getFieldInfo("sf")  if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
           baseALabel.title = "---"
         else  
           if global_baseA_left then
