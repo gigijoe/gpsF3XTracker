@@ -56,8 +56,21 @@ local on_simulator = false
 local basePath = '/WIDGETS/gpsF3xT/gpstrack/'
 local gpsOK = false
 local tx16s = false
-
+local t15 = false
 -- local sensor = nil
+
+local ver, radio, maj, minor, rev = getVersion()
+if string.find(radio,"-simu") then
+    print("Simulator detectded")
+    on_simulator = true
+end
+if string.find(radio,"tx16s") then
+    tx16s = true
+elseif string.find(radio,"t15") then
+    t15 = true
+end
+
+print("Radio: " .. radio) 
 
 -----------------------------------------------------------
 -- module load function
@@ -73,13 +86,6 @@ function mydofile (filename)
     return f()
 end
   
-local ver, radio, maj, minor, rev = getVersion()
-if string.find(radio,"-simu") then
-    print("Simulator detectded")
-    on_simulator = true
-elseif string.find(radio,"tx16s") then
-    tx16s = true;
-end
 --[[
 local settings = getGeneralSettings()
 print("Language : "..settings["language"])
@@ -262,12 +268,9 @@ reloadCompetition()
 local startSwitchInfo = getFieldInfo("sh")
 local centerSliderInfo = getFieldInfo("s2")
 
-local ver, radio, maj, minor, rev = getVersion()
-if string.find(radio,"t15") or string.find(radio,"t15-simu") then
+if t15 then
   startSwitchInfo = getFieldInfo("sf")
 end
-
-print(radio) 
 
 local compLabel = gui.label(COL1, TOP, WIDTH, HEIGHT, global_comp_display)
 local baseALabel = gui.label(COL2, TOP, 2 * WIDTH, HEIGHT, "BASE A Left")
