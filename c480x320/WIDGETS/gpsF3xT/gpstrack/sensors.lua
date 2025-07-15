@@ -52,7 +52,7 @@ data.gpsF3x = {
     gpsSats = {name = "Sats", id = 0},
     gpsHdg = {name = "Hdg", id = 0}, -- PDOP as Hdg
     -- gpsDate = {name = "Date", id = 0},
-    addEle = {name = "ele", id = 0}
+    -- addEle = {name = "ele", id = 0}
 }
 -- debugging
 data.testUnit = {
