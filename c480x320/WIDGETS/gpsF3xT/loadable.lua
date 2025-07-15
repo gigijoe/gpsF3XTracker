@@ -295,7 +295,7 @@ local lapItems = {"L1 : ", "L2 : ", "L3 : ", "L4 : ", "L5 : ", "L6 : ", "L7 : ",
 local lapsMenu = gui.menu(COL4, TOP, WIDTH, 9 * HEIGHT, lapItems, nil, GREEN)
 
 local function startSwitchPressed()
-    local startSwitchInfo = getFieldInfo("sh")
+    --local startSwitchInfo = getFieldInfo("sh")
 
     local val = getValue(startSwitchInfo.id)
     if startSwitchValue ~= val then
@@ -495,7 +495,7 @@ function refresh()
     if global_has_changed then
         -- print("Reload Competition ...")
         reloadCompetition()
-      getFieldInfo("sf")  if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
+        if global_comp_type == 'f3b_dist' or global_comp_type == 'f3b_spee' then
           baseALabel.title = "---"
         else  
           if global_baseA_left then
